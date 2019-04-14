@@ -144,6 +144,30 @@ void put_pixel_demo()
     pod_putpixel(x0, y0, colour);
 }
 
+void triangle_demo()
+{
+    int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
+    int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
+    int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
+    int16_t y1 = (rand() % 280) - 20; /* -20 ... 260 */
+    int16_t x2 = (rand() % 360) - 20; /* -20 ... 340 */
+    int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
+    uint16_t colour = rand() % 0xffff;
+    pod_triangle(x0, y0, x1, y1, x2, y2, colour);
+}
+
+void fill_triangle_demo()
+{
+    int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
+    int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
+    int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
+    int16_t y1 = (rand() % 280) - 20; /* -20 ... 260 */
+    int16_t x2 = (rand() % 360) - 20; /* -20 ... 340 */
+    int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
+    uint16_t colour = rand() % 0xffff;
+    pod_filltriangle(x0, y0, x1, y1, x2, y2, colour);
+}
+
 int main()
 {
     pod_init();
@@ -163,12 +187,16 @@ int main()
 
     while (!quit) {
 
-        if (0 == demo % 10) {
+        if (0 == demo % 12) {
+            put_text_demo();
+        } else if (0 == demo % 11) {
+            put_character_demo();
+        } else if (0 == demo % 10) {
             put_pixel_demo();
         } else if (0 == demo % 9) {
-            put_text_demo();
+            fill_triangle_demo();
         } else if (0 == demo % 8) {
-            put_character_demo();
+            triangle_demo();
         } else if (0 == demo % 7) {
             fill_rectangle_demo();
         } else if (0 == demo % 6) {
