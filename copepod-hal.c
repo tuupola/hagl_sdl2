@@ -38,7 +38,7 @@ static SDL_Texture *texture = NULL;
 static framebuffer_t fb = {
     .width = DISPLAY_WIDTH,
     .height = DISPLAY_HEIGHT,
-    .depth = 16,
+    .depth = DISPLAY_DEPTH,
 };
 
 /*
@@ -56,7 +56,10 @@ void pod_hal_putpixel(int16_t x0, int16_t y0, uint16_t color)
  */
 void pod_hal_init(void)
 {
-    framebuffer_init(&fb);
+    // uint32_t size = framebuffer_size(&fb);
+    // uint8_t *buffer = malloc(size);
+    static uint8_t buffer[FRAMEBUFFER_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
+    framebuffer_init(&fb, buffer);
 
     if ((window != NULL) && (renderer != NULL)) {
         return;
