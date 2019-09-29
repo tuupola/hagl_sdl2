@@ -27,7 +27,7 @@ SOFTWARE.
 #include <color.h>
 #include <SDL2/SDL.h>
 
-#include <framebuffer.h>
+#include <bitmap.h>
 
 #include "copepod-hal.h"
 
@@ -35,7 +35,7 @@ static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 
-static framebuffer_t fb = {
+static bitmap_t fb = {
     .width = DISPLAY_WIDTH,
     .height = DISPLAY_HEIGHT,
     .depth = DISPLAY_DEPTH,
@@ -56,10 +56,8 @@ void pod_hal_putpixel(int16_t x0, int16_t y0, uint16_t color)
  */
 void pod_hal_init(void)
 {
-    // uint32_t size = framebuffer_size(&fb);
-    // uint8_t *buffer = malloc(size);
-    static uint8_t buffer[FRAMEBUFFER_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
-    framebuffer_init(&fb, buffer);
+    static uint8_t buffer[BITMAP_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
+    bitmap_init(&fb, buffer);
 
     if ((window != NULL) && (renderer != NULL)) {
         return;

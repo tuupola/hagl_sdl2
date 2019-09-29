@@ -7,8 +7,7 @@
 
 #include "copepod.h"
 #include "pps.h"
-#include "fonts/8x8.h"
-//#include "fonts/renew.h"
+#include "font8x8.h"
 
 uint32_t flush_callback(uint32_t interval, void *param)
 {
@@ -124,7 +123,7 @@ void put_character_demo()
 
     uint16_t colour = rand() % 0xffff;
     char ascii = rand() % 127;
-    pod_put_char(ascii, x0, y0, colour, font);
+    pod_put_char(ascii, x0, y0, colour, font8x8);
 }
 
 void put_text_demo()
@@ -133,7 +132,7 @@ void put_text_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
 
     uint16_t colour = rand() % 0xffff;
-    pod_put_text("YO! MTV raps.", x0, y0, colour, font);
+    pod_put_text("YO! MTV raps.", x0, y0, colour, font8x8);
 }
 
 void put_pixel_demo()
@@ -169,6 +168,21 @@ void fill_triangle_demo()
     pod_fill_triangle(x0, y0, x1, y1, x2, y2, colour);
 }
 
+void scale_blit_demo()
+{
+}
+
+void rgb_demo()
+{
+    uint16_t red = RGB565(255, 0, 0);
+    uint16_t green = RGB565(0, 255, 0);
+    uint16_t blue = RGB565(0, 0, 255);
+    pod_fill_rectangle(0, 0, 106, 239, red);
+    pod_fill_rectangle(107, 0, 212, 239, green);
+    pod_fill_rectangle(213, 0, 319, 239, blue);
+}
+
+
 int main()
 {
     pod_init();
@@ -177,7 +191,7 @@ int main()
 
     uint32_t flush_delay = 1000 / 30; /* 30 fps */
     uint32_t pps_delay = 2000; /* 0.5 fps */
-    uint16_t demo = 1;
+    uint16_t demo = 0;
     float current_pps = 0.0; /* primitives per secod */
 
     SDL_TimerID flush_id = SDL_AddTimer(flush_delay, flush_callback, NULL);
@@ -189,7 +203,7 @@ int main()
     while (!quit) {
 
         if (0 == demo) {
-            put_text_demo();
+            rgb_demo();
         } else if (1 == demo) {
             put_character_demo();
         } else if (2 == demo) {
@@ -212,6 +226,8 @@ int main()
             polygon_demo();
         } else if (11 == demo) {
             fill_polygon_demo();
+        } else if (12 == demo) {
+            put_text_demo();
         }
 
         current_pps = pps(false);
@@ -221,10 +237,13 @@ int main()
                 quit = true;
             }
             if (event.type == SDL_KEYDOWN) {
-                current_pps = pps(true);
-                demo = (demo + 1) % 12;
-                printf("Demo is now: %d\n", demo);
-
+                if (SDLK_ESCAPE ==event.key.keysym.sym) {
+                    quit = true;
+                } else {
+                    current_pps = pps(true);
+                    demo = (demo + 1) % 12;
+                    printf("Demo is now: %d\n", demo);
+                }
             }
         }
 
