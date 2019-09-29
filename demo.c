@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 
 #include "copepod.h"
+#include "rgb565.h"
 #include "pps.h"
 #include "font8x8.h"
 
@@ -174,9 +175,9 @@ void scale_blit_demo()
 
 void rgb_demo()
 {
-    uint16_t red = RGB565(255, 0, 0);
-    uint16_t green = RGB565(0, 255, 0);
-    uint16_t blue = RGB565(0, 0, 255);
+    uint16_t red = rgb565(255, 0, 0);
+    uint16_t green = rgb565(0, 255, 0);
+    uint16_t blue = rgb565(0, 0, 255);
     pod_fill_rectangle(0, 0, 106, 239, red);
     pod_fill_rectangle(107, 0, 212, 239, green);
     pod_fill_rectangle(213, 0, 319, 239, blue);

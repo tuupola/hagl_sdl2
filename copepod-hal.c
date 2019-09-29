@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <color.h>
+#include <rgb565.h>
 #include <SDL2/SDL.h>
 
 #include <bitmap.h>
