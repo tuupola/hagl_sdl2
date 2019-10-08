@@ -29,7 +29,7 @@ SOFTWARE.
 
 #include <bitmap.h>
 
-#include "copepod-hal.h"
+#include "copepod_hal.h"
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
