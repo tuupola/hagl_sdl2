@@ -26,6 +26,7 @@ SOFTWARE.
 #define _POD_SDL2_HAL_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define DISPLAY_WIDTH   320
 #define DISPLAY_HEIGHT  240
@@ -40,7 +41,7 @@ SOFTWARE.
 #define POD_HAS_HAL_DESTROY
 
 void pod_hal_init(void);
-void pod_hal_flush(void);
+void pod_hal_flush(bool dirty, int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 void pod_hal_destroy(void);
 void pod_hal_putpixel(int16_t x0, int16_t y0, uint16_t color);
 

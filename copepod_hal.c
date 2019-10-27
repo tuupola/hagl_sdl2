@@ -103,12 +103,15 @@ void pod_hal_init(void)
 /*
  * Flushes the framebuffer to the SDL2 window.
  */
-void pod_hal_flush(void)
+void pod_hal_flush(bool dirty, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 {
-    SDL_UpdateTexture(texture, NULL, fb.buffer, fb.pitch);
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
+    if (dirty) {
+        //printf("Dirty %d,%d %d,%d (%d,%d)\n", x0, y0, x1, y1, x1 - x0 + 1, y1 - y0 + 1);
+        SDL_UpdateTexture(texture, NULL, fb.buffer, fb.pitch);
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, texture, NULL, NULL);
+        SDL_RenderPresent(renderer);
+    }
 }
 
 void pod_hal_destroy(void)
