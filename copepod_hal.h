@@ -34,12 +34,16 @@ SPDX-License-Identifier: MIT
 #ifndef _POD_SDL2_HAL_H
 #define _POD_SDL2_HAL_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DISPLAY_WIDTH   320
-#define DISPLAY_HEIGHT  240
-#define DISPLAY_DEPTH   16
+#define DISPLAY_WIDTH   (320)
+#define DISPLAY_HEIGHT  (240)
+#define DISPLAY_DEPTH   (16)
 
 #undef POD_HAS_HAL_BLIT
 #undef POD_HAS_HAL_SCALE_BLIT
@@ -54,4 +58,7 @@ void pod_hal_flush(bool dirty, int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 void pod_hal_destroy(void);
 void pod_hal_putpixel(int16_t x0, int16_t y0, uint16_t color);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* _POD_SDL2_HAL_H */
