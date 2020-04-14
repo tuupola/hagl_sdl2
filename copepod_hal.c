@@ -35,8 +35,8 @@ SPDX-License-Identifier: MIT
 #include <stdbool.h>
 #include <rgb565.h>
 #include <SDL2/SDL.h>
-
 #include <bitmap.h>
+#include <window.h>
 
 #include "copepod_hal.h"
 
@@ -50,6 +50,13 @@ static bitmap_t fb = {
     .depth = DISPLAY_DEPTH,
 };
 
+static window_t dirty = {
+    .x0 = DISPLAY_WIDTH - 1,
+    .y0 = DISPLAY_HEIGHT - 1,
+    .x1 = 0,
+    .y1 = 0,
+};
+
 /*
  * Putpixel function. This is the only mandatory function which HAL
  * must implement for copepod to be able to draw graphical primitives.
@@ -58,6 +65,12 @@ void pod_hal_putpixel(int16_t x0, int16_t y0, uint16_t color)
 {
     uint16_t *ptr = (uint16_t *) (fb.buffer + fb.pitch * y0 + (fb.depth / 8) * x0);
     *ptr = color;
+
+    /* Update dirty window */
+    dirty.x0 = min(dirty.x0, x0);
+    dirty.x1 = max(dirty.x1, x0);
+    dirty.y0 = min(dirty.y0, y0);
+    dirty.y1 = max(dirty.y1, y0);
 }
 
 /*
@@ -110,14 +123,34 @@ void pod_hal_init(void)
 }
 
 /*
- * Flushes the framebuffer to the SDL2 window.
+ * Flushes the framebuffer to the SDL2 window
  */
 void pod_hal_flush()
 {
+    /* Check whether something has been drawn already */
+    if (dirty.y1 < dirty.y0) {
+        return;
+    }
+
     SDL_UpdateTexture(texture, NULL, fb.buffer, fb.pitch);
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
+
+    // printf("Dirty %d,%d %d,%d (%d,%d)\n",
+    //     dirty.x0,
+    //     dirty.y0,
+    //     dirty.x1,
+    //     dirty.y1,
+    //     dirty.x1 - dirty.x0 + 1,
+    //     dirty.y1 - dirty.y0 + 1
+    // );
+
+    /* Reset dirty window */
+    dirty.x0 = DISPLAY_WIDTH - 1;
+    dirty.x1 = 0;
+    dirty.y0 = DISPLAY_HEIGHT - 1;
+    dirty.y1 = 0;
 }
 
 void pod_hal_destroy(void)
