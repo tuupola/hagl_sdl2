@@ -6,14 +6,14 @@
 #include <SDL2/SDL.h>
 
 #include "copepod.h"
+#include "copepod_hal.h"
 #include "rgb565.h"
-#include "pps.h"
+#include "fps.h"
 #include "font8x8.h"
 
 uint32_t flush_callback(uint32_t interval, void *param)
 {
     pod_flush();
-    //printf("Primitives per second: %f\n", *(float *)param);
     return interval;
 }
 
@@ -37,6 +37,7 @@ void polygon_demo()
     int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
+
     pod_draw_polygon(5, vertices, colour);
 }
 
@@ -54,6 +55,7 @@ void fill_polygon_demo()
     int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
+
     pod_fill_polygon(5, vertices, colour);
 }
 
@@ -63,6 +65,7 @@ void circle_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t r = (rand() % 40);
     uint16_t colour = rand() % 0xffff;
+
     pod_draw_circle(x0, y0, r, colour);
 }
 
@@ -72,6 +75,7 @@ void fill_circle_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t r = (rand() % 40);
     uint16_t colour = rand() % 0xffff;
+
     pod_fill_circle(x0, y0, r, colour);
 }
 
@@ -82,6 +86,7 @@ void line_demo()
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y1 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
+
     pod_draw_line(x0, y0, x1, y1, colour);
 }
 
@@ -98,6 +103,7 @@ void rectangle_demo()
     int16_t x4 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
+
     pod_draw_rectangle(x0, y0, x1, y1, colour);
 }
 
@@ -114,6 +120,7 @@ void fill_rectangle_demo()
     int16_t x4 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
+
     pod_fill_rectangle(x0, y0, x1, y1, colour);
 }
 
@@ -121,9 +128,9 @@ void put_character_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
-
     uint16_t colour = rand() % 0xffff;
     char ascii = rand() % 127;
+
     pod_put_char(ascii, x0, y0, colour, font8x8);
 }
 
@@ -131,8 +138,8 @@ void put_text_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
-
     uint16_t colour = rand() % 0xffff;
+
     pod_put_text("YO! MTV raps.", x0, y0, colour, font8x8);
 }
 
@@ -140,9 +147,10 @@ void put_pixel_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
-
     uint16_t colour = rand() % 0xffff;
+
     pod_put_pixel(x0, y0, colour);
+
 }
 
 void triangle_demo()
@@ -154,6 +162,7 @@ void triangle_demo()
     int16_t x2 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
+
     pod_draw_triangle(x0, y0, x1, y1, x2, y2, colour);
 }
 
@@ -166,6 +175,7 @@ void fill_triangle_demo()
     int16_t x2 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
+
     pod_fill_triangle(x0, y0, x1, y1, x2, y2, colour);
 }
 
@@ -178,21 +188,24 @@ void rgb_demo()
     uint16_t red = rgb565(255, 0, 0);
     uint16_t green = rgb565(0, 255, 0);
     uint16_t blue = rgb565(0, 0, 255);
-    pod_fill_rectangle(0, 0, 106, 239, red);
-    pod_fill_rectangle(107, 0, 212, 239, green);
-    pod_fill_rectangle(213, 0, 319, 239, blue);
-}
+    int16_t x0 = 0;
+    int16_t x1 = DISPLAY_WIDTH / 3;
+    int16_t x2 = 2 * x1;
 
+    pod_fill_rectangle(x0, 0, x1 - 1, DISPLAY_HEIGHT, red);
+    pod_fill_rectangle(x1, 0, x2 - 1, DISPLAY_HEIGHT, green);
+    pod_fill_rectangle(x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
+}
 
 int main()
 {
     pod_init();
-    pod_set_clip_window(0, 30, 319, 210);
+    //pod_set_clip_window(0, 30, 319, 210);
     srand(time(0));
 
     uint32_t flush_delay = 1000 / 30; /* 30 fps */
     uint32_t pps_delay = 2000; /* 0.5 fps */
-    uint16_t demo = 0;
+    uint16_t current_demo = 0;
     float current_pps = 0.0; /* primitives per secod */
 
     SDL_TimerID flush_id = SDL_AddTimer(flush_delay, flush_callback, NULL);
@@ -201,37 +214,29 @@ int main()
     bool quit = false;
     SDL_Event event;
 
+    void (*demo[13]) ();
+    demo[0] = rgb_demo;
+    demo[1] = put_character_demo;
+    demo[2] = put_pixel_demo;
+    demo[3] = fill_triangle_demo;
+    demo[4] = triangle_demo;
+    demo[5] = fill_rectangle_demo;
+    demo[6] = rectangle_demo;
+    demo[7] = line_demo;
+    demo[8] = circle_demo;
+    demo[9] = fill_circle_demo;
+    demo[10] = polygon_demo;
+    demo[11] = fill_polygon_demo;
+    demo[12] = put_text_demo;
+
+    printf("\n");
+    printf("Press any key to change demo.\n");
+    printf("Press ESC to quit.\n\n");
+
     while (!quit) {
 
-        if (0 == demo) {
-            rgb_demo();
-        } else if (1 == demo) {
-            put_character_demo();
-        } else if (2 == demo) {
-            put_pixel_demo();
-        } else if (3 == demo) {
-            fill_triangle_demo();
-        } else if (4 == demo) {
-            triangle_demo();
-        } else if (5 == demo) {
-            fill_rectangle_demo();
-        } else if (6 == demo) {
-            rectangle_demo();
-        } else if (7 == demo) {
-            line_demo();
-        } else if (8 == demo) {
-            circle_demo();
-        } else if (9 == demo) {
-            fill_circle_demo();
-        } else if (10 == demo) {
-            polygon_demo();
-        } else if (11 == demo) {
-            fill_polygon_demo();
-        } else if (12 == demo) {
-            put_text_demo();
-        }
-
-        current_pps = pps(false);
+        (*demo[current_demo])();
+        current_pps = fps();
 
         if (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -241,16 +246,14 @@ int main()
                 if (SDLK_ESCAPE ==event.key.keysym.sym) {
                     quit = true;
                 } else {
-                    current_pps = pps(true);
-                    demo = (demo + 1) % 12;
-                    printf("Demo is now: %d\n", demo);
+                    fps_reset();
+                    pod_clear_screen();
+                    current_demo = (current_demo + 1) % 12;
                 }
             }
         }
 
     }
-
-    //SDL_Delay(5000);
 
     SDL_RemoveTimer(flush_id);
     SDL_RemoveTimer(pps_id);
