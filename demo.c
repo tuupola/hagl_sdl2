@@ -263,7 +263,7 @@ int main()
 
         (*demo[current_demo])();
         current_pps = fps();
-
+        //SDL_Delay(100);
         if (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 quit = true;
@@ -278,7 +278,6 @@ int main()
                 }
             }
         }
-
     }
 
     SDL_RemoveTimer(flush_id);
