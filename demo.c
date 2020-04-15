@@ -282,6 +282,6 @@ int main()
 
     SDL_RemoveTimer(flush_id);
     SDL_RemoveTimer(pps_id);
-    pod_destroy();
+    pod_close();
     return 0;
 }
