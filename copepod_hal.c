@@ -61,7 +61,7 @@ static window_t dirty = {
  * Putpixel function. This is the only mandatory function which HAL
  * must implement for copepod to be able to draw graphical primitives.
  */
-void pod_hal_putpixel(int16_t x0, int16_t y0, uint16_t color)
+void pod_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color)
 {
     uint16_t *ptr = (uint16_t *) (fb.buffer + fb.pitch * y0 + (fb.depth / 8) * x0);
     *ptr = color;
