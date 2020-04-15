@@ -153,7 +153,7 @@ void pod_hal_flush()
     dirty.y1 = 0;
 }
 
-void pod_hal_destroy(void)
+void pod_hal_close(void)
 {
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
