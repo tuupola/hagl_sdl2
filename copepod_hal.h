@@ -40,6 +40,7 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <bitmap.h>
 
 #define DISPLAY_WIDTH   (320)
 #define DISPLAY_HEIGHT  (240)
@@ -53,7 +54,7 @@ extern "C" {
 #define POD_HAS_HAL_FLUSH
 #define POD_HAS_HAL_DESTROY
 
-void pod_hal_init(void);
+bitmap_t *pod_hal_init(void);
 void pod_hal_flush();
 void pod_hal_close(void);
 void pod_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color);
