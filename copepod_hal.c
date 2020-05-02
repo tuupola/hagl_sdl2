@@ -76,18 +76,18 @@ void pod_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color)
 /*
  * Initializes the SDL2 HAL.
  */
-void pod_hal_init(void)
+bitmap_t *pod_hal_init(void)
 {
     static uint8_t buffer[BITMAP_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
     bitmap_init(&fb, buffer);
 
     if ((window != NULL) && (renderer != NULL)) {
-        return;
+        return NULL;
     }
 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
     window = SDL_CreateWindow(
-        "Copepod example",
+        "Copepod SDL2",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         DISPLAY_WIDTH,
@@ -120,6 +120,8 @@ void pod_hal_init(void)
     if (NULL == texture) {
         printf("Could not create texture: %s\n", SDL_GetError());
     }
+
+    return &fb;
 }
 
 /*
