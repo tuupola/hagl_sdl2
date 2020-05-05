@@ -46,13 +46,9 @@ extern "C" {
 #define DISPLAY_HEIGHT  (240)
 #define DISPLAY_DEPTH   (16)
 
-#undef HAGL_HAS_HAL_BLIT
-#undef HAGL_HAS_HAL_SCALE_BLIT
-#undef HAGL_HAS_HAL_HLINE
-#undef HAGL_HAS_HAL_VLINE
 #define HAGL_HAS_HAL_INIT
 #define HAGL_HAS_HAL_FLUSH
-#define HAGL_HAS_HAL_DESTROY
+#define HAGL_HAS_HAL_CLOSE
 
 /* RGB565 colorspace */
 typedef uint16_t color_t;
