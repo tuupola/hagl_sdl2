@@ -54,10 +54,13 @@ extern "C" {
 #define HAGL_HAS_HAL_FLUSH
 #define HAGL_HAS_HAL_DESTROY
 
-bitmap_t *hagl_hal_init(void);
+/* RGB565 colorspace */
+typedef uint16_t color_t;
+
+void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color);
 void hagl_hal_flush();
+bitmap_t *hagl_hal_init(void);
 void hagl_hal_close(void);
-void hagl_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color);
 
 #ifdef __cplusplus
 }

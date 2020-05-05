@@ -61,9 +61,9 @@ static window_t dirty = {
  * Putpixel function. This is the only mandatory function which HAL
  * must implement for copepod to be able to draw graphical primitives.
  */
-void hagl_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color)
+void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
 {
-    uint16_t *ptr = (uint16_t *) (fb.buffer + fb.pitch * y0 + (fb.depth / 8) * x0);
+    color_t *ptr = (color_t *) (fb.buffer + fb.pitch * y0 + (fb.depth / 8) * x0);
     *ptr = color;
 
     /* Update dirty window */
@@ -87,7 +87,7 @@ bitmap_t *hagl_hal_init(void)
 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
     window = SDL_CreateWindow(
-        "Copepod SDL2",
+        "HAGL SDL2",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         DISPLAY_WIDTH,
