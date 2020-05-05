@@ -25,14 +25,14 @@ SOFTWARE.
 -cut-
 
 This file is part of the SDL2 HAL for Copepod graphics library:
-https://github.com/tuupola/copepod_libsdl2
+https://github.com/tuupola/copeHAGL_libsdl2
 
 SPDX-License-Identifier: MIT
 
 */
 
-#ifndef _POD_SDL2_HAL_H
-#define _POD_SDL2_HAL_H
+#ifndef _HAGL_SDL2_HAL_H
+#define _HAGL_SDL2_HAL_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,20 +46,20 @@ extern "C" {
 #define DISPLAY_HEIGHT  (240)
 #define DISPLAY_DEPTH   (16)
 
-#undef POD_HAS_HAL_BLIT
-#undef POD_HAS_HAL_SCALE_BLIT
-#undef POD_HAS_HAL_HLINE
-#undef POD_HAS_HAL_VLINE
-#define POD_HAS_HAL_INIT
-#define POD_HAS_HAL_FLUSH
-#define POD_HAS_HAL_DESTROY
+#undef HAGL_HAS_HAL_BLIT
+#undef HAGL_HAS_HAL_SCALE_BLIT
+#undef HAGL_HAS_HAL_HLINE
+#undef HAGL_HAS_HAL_VLINE
+#define HAGL_HAS_HAL_INIT
+#define HAGL_HAS_HAL_FLUSH
+#define HAGL_HAS_HAL_DESTROY
 
-bitmap_t *pod_hal_init(void);
-void pod_hal_flush();
-void pod_hal_close(void);
-void pod_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color);
+bitmap_t *hagl_hal_init(void);
+void hagl_hal_flush();
+void hagl_hal_close(void);
+void hagl_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* _POD_SDL2_HAL_H */
+#endif /* _HAGL_SDL2_HAL_H */

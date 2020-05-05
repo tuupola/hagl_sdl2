@@ -31,15 +31,15 @@ SPDX-License-Identifier: MIT-0
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 
-#include "copepod.h"
-#include "copepod_hal.h"
+#include "hagl.h
+"
+#include "hagl_hal.h"
 #include "rgb565.h"
 #include "fps.h"
-#include "font8x8.h"
 
 uint32_t flush_callback(uint32_t interval, void *param)
 {
-    pod_flush();
+    hagl_flush();
     return interval;
 }
 
@@ -64,7 +64,7 @@ void polygon_demo()
     uint16_t colour = rand() % 0xffff;
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
 
-    pod_draw_polygon(5, vertices, colour);
+    hagl_draw_polygon(5, vertices, colour);
 }
 
 void fill_polygon_demo()
@@ -82,7 +82,7 @@ void fill_polygon_demo()
     uint16_t colour = rand() % 0xffff;
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
 
-    pod_fill_polygon(5, vertices, colour);
+    hagl_fill_polygon(5, vertices, colour);
 }
 
 void circle_demo()
@@ -92,7 +92,7 @@ void circle_demo()
     uint16_t r = (rand() % 40);
     uint16_t colour = rand() % 0xffff;
 
-    pod_draw_circle(x0, y0, r, colour);
+    hagl_draw_circle(x0, y0, r, colour);
 }
 
 void fill_circle_demo()
@@ -102,7 +102,7 @@ void fill_circle_demo()
     uint16_t r = (rand() % 40);
     uint16_t colour = rand() % 0xffff;
 
-    pod_fill_circle(x0, y0, r, colour);
+    hagl_fill_circle(x0, y0, r, colour);
 }
 
 void line_demo()
@@ -113,7 +113,7 @@ void line_demo()
     int16_t y1 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    pod_draw_line(x0, y0, x1, y1, colour);
+    hagl_draw_line(x0, y0, x1, y1, colour);
 }
 
 void rectangle_demo()
@@ -130,7 +130,7 @@ void rectangle_demo()
     int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    pod_draw_rectangle(x0, y0, x1, y1, colour);
+    hagl_draw_rectangle(x0, y0, x1, y1, colour);
 }
 
 void fill_rectangle_demo()
@@ -147,7 +147,7 @@ void fill_rectangle_demo()
     int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    pod_fill_rectangle(x0, y0, x1, y1, colour);
+    hagl_fill_rectangle(x0, y0, x1, y1, colour);
 }
 
 void put_character_demo()
@@ -157,7 +157,7 @@ void put_character_demo()
     uint16_t colour = rand() % 0xffff;
     char ascii = rand() % 127;
 
-    pod_put_char(ascii, x0, y0, colour, font8x8);
+    hagl_put_char(ascii, x0, y0, colour, font8x8);
 }
 
 void put_text_demo()
@@ -166,7 +166,7 @@ void put_text_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    pod_put_text("YO! MTV raps.", x0, y0, colour, font8x8);
+    hagl_put_text("YO! MTV raps.", x0, y0, colour, font8x8);
 }
 
 void put_pixel_demo()
@@ -175,7 +175,7 @@ void put_pixel_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    pod_put_pixel(x0, y0, colour);
+    hagl_put_pixel(x0, y0, colour);
 
 }
 
@@ -189,7 +189,7 @@ void triangle_demo()
     int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    pod_draw_triangle(x0, y0, x1, y1, x2, y2, colour);
+    hagl_draw_triangle(x0, y0, x1, y1, x2, y2, colour);
 }
 
 void fill_triangle_demo()
@@ -202,7 +202,7 @@ void fill_triangle_demo()
     int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    pod_fill_triangle(x0, y0, x1, y1, x2, y2, colour);
+    hagl_fill_triangle(x0, y0, x1, y1, x2, y2, colour);
 }
 
 void scale_blit_demo()
@@ -218,14 +218,14 @@ void rgb_demo()
     int16_t x1 = DISPLAY_WIDTH / 3;
     int16_t x2 = 2 * x1;
 
-    pod_fill_rectangle(x0, 0, x1 - 1, DISPLAY_HEIGHT, red);
-    pod_fill_rectangle(x1, 0, x2 - 1, DISPLAY_HEIGHT, green);
-    pod_fill_rectangle(x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
+    hagl_fill_rectangle(x0, 0, x1 - 1, DISPLAY_HEIGHT, red);
+    hagl_fill_rectangle(x1, 0, x2 - 1, DISPLAY_HEIGHT, green);
+    hagl_fill_rectangle(x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
 }
 
 int main()
 {
-    pod_init();
+    hagl_init();
     //pod_set_clip_window(0, 30, 319, 210);
     srand(time(0));
 
@@ -273,7 +273,7 @@ int main()
                     quit = true;
                 } else {
                     fps_reset();
-                    pod_clear_screen();
+                    hagl_clear_screen();
                     current_demo = (current_demo + 1) % 12;
                 }
             }
@@ -282,6 +282,6 @@ int main()
 
     SDL_RemoveTimer(flush_id);
     SDL_RemoveTimer(pps_id);
-    pod_close();
+    hagl_close();
     return 0;
 }

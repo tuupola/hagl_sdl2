@@ -24,8 +24,8 @@ SOFTWARE.
 
 -cut-
 
-This file is part of the SDL2 HAL for Copepod graphics library:
-https://github.com/tuupola/copepod_libsdl2
+This file is part of the SDL2 HAL for the HAGL graphics library:
+https://github.com/tuupola/hagl_libsdl2
 
 SPDX-License-Identifier: MIT
 
@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
 #include <bitmap.h>
 #include <window.h>
 
-#include "copepod_hal.h"
+#include "hagl_hal.h"
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -61,7 +61,7 @@ static window_t dirty = {
  * Putpixel function. This is the only mandatory function which HAL
  * must implement for copepod to be able to draw graphical primitives.
  */
-void pod_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color)
+void hagl_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color)
 {
     uint16_t *ptr = (uint16_t *) (fb.buffer + fb.pitch * y0 + (fb.depth / 8) * x0);
     *ptr = color;
@@ -76,7 +76,7 @@ void pod_hal_put_pixel(int16_t x0, int16_t y0, uint16_t color)
 /*
  * Initializes the SDL2 HAL.
  */
-bitmap_t *pod_hal_init(void)
+bitmap_t *hagl_hal_init(void)
 {
     static uint8_t buffer[BITMAP_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
     bitmap_init(&fb, buffer);
@@ -127,7 +127,7 @@ bitmap_t *pod_hal_init(void)
 /*
  * Flushes the framebuffer to the SDL2 window
  */
-void pod_hal_flush()
+void hagl_hal_flush()
 {
     /* Check whether something has been drawn already */
     if (dirty.y1 < dirty.y0) {
@@ -155,7 +155,7 @@ void pod_hal_flush()
     dirty.y1 = 0;
 }
 
-void pod_hal_close(void)
+void hagl_hal_close(void)
 {
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
