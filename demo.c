@@ -31,11 +31,11 @@ SPDX-License-Identifier: MIT-0
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 
-#include "hagl.h
-"
 #include "hagl_hal.h"
+#include "hagl.h"
 #include "rgb565.h"
 #include "fps.h"
+#include "font6x9.h"
 
 uint32_t flush_callback(uint32_t interval, void *param)
 {
@@ -157,7 +157,7 @@ void put_character_demo()
     uint16_t colour = rand() % 0xffff;
     char ascii = rand() % 127;
 
-    hagl_put_char(ascii, x0, y0, colour, font8x8);
+    hagl_put_char(ascii, x0, y0, colour, font6x9);
 }
 
 void put_text_demo()
@@ -166,7 +166,7 @@ void put_text_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    hagl_put_text("YO! MTV raps.", x0, y0, colour, font8x8);
+    hagl_put_text(u"YO! MTV raps.", x0, y0, colour, font6x9);
 }
 
 void put_pixel_demo()
@@ -272,7 +272,7 @@ int main()
                 if (SDLK_ESCAPE ==event.key.keysym.sym) {
                     quit = true;
                 } else {
-                    fps_reset();
+                    //fps_reset();
                     hagl_clear_screen();
                     current_demo = (current_demo + 1) % 12;
                 }
