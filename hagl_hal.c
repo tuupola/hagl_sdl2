@@ -162,3 +162,9 @@ void hagl_hal_close(void)
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
+
+color_t hagl_hal_color(uint8_t r, uint8_t g, uint8_t b)
+{
+    color_t color = rgb565(r, g, b);
+    return (color >> 8) | (color << 8);
+}
