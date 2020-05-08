@@ -49,6 +49,7 @@ extern "C" {
 #define HAGL_HAS_HAL_INIT
 #define HAGL_HAS_HAL_FLUSH
 #define HAGL_HAS_HAL_CLOSE
+#define HAGL_HAS_HAL_COLOR
 
 /* RGB565 colorspace */
 typedef uint16_t color_t;
@@ -57,6 +58,7 @@ void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color);
 void hagl_hal_flush();
 bitmap_t *hagl_hal_init(void);
 void hagl_hal_close(void);
+color_t hagl_hal_color(uint8_t r, uint8_t g, uint8_t b);
 
 #ifdef __cplusplus
 }
