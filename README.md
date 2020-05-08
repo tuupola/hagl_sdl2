@@ -1,4 +1,4 @@
-# SDL2 HAL for Copepod
+# SDL2 HAL for HAGL
 
 This is an [SDL2](https://www.libsdl.org/) HAL for the lightweight hardware agnostic graphics library [HAGL](https://github.com/tuupola/hagl
 ). This repository serves as an example on how to create a simple HAL.
