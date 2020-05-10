@@ -44,7 +44,7 @@ static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 
-static bitmap_t fb = {
+static bitmap_t bb = {
     .width = DISPLAY_WIDTH,
     .height = DISPLAY_HEIGHT,
     .depth = DISPLAY_DEPTH,
@@ -57,29 +57,23 @@ static window_t dirty = {
     .y1 = 0,
 };
 
-/*
- * Putpixel function. This is the only mandatory function which HAL
- * must implement for copepod to be able to draw graphical primitives.
- */
 void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
 {
-    color_t *ptr = (color_t *) (fb.buffer + fb.pitch * y0 + (fb.depth / 8) * x0);
+    color_t *ptr = (color_t *) (bb.buffer + bb.pitch * y0 + (bb.depth / 8) * x0);
     *ptr = color;
 
-    /* Update dirty window */
+    /* Tracking dirty window is not needed by HAGL. Below code is included */
+    /* as an example if you want to iplement it in your HAL. */
     dirty.x0 = min(dirty.x0, x0);
     dirty.x1 = max(dirty.x1, x0);
     dirty.y0 = min(dirty.y0, y0);
     dirty.y1 = max(dirty.y1, y0);
 }
 
-/*
- * Initializes the SDL2 HAL.
- */
 bitmap_t *hagl_hal_init(void)
 {
     static uint8_t buffer[BITMAP_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
-    bitmap_init(&fb, buffer);
+    bitmap_init(&bb, buffer);
 
     if ((window != NULL) && (renderer != NULL)) {
         return NULL;
@@ -121,11 +115,11 @@ bitmap_t *hagl_hal_init(void)
         printf("Could not create texture: %s\n", SDL_GetError());
     }
 
-    return &fb;
+    return &bb;
 }
 
 /*
- * Flushes the framebuffer to the SDL2 window
+ * Flushes the back buffer to the SDL2 window
  */
 void hagl_hal_flush()
 {
@@ -134,7 +128,7 @@ void hagl_hal_flush()
         return;
     }
 
-    SDL_UpdateTexture(texture, NULL, fb.buffer, fb.pitch);
+    SDL_UpdateTexture(texture, NULL, bb.buffer, bb.pitch);
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
