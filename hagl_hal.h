@@ -84,7 +84,7 @@ void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color);
  * @param y0
  * @return color at the given location
  */
-color_t hagl_get_pixel(int16_t x0, int16_t y0);
+color_t hagl_hal_get_pixel(int16_t x0, int16_t y0);
 
 /**
  * @brief Initialize the HAL
