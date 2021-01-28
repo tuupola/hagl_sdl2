@@ -70,6 +70,11 @@ void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
     dirty.y1 = max(dirty.y1, y0);
 }
 
+color_t hagl_hal_get_pixel(int16_t x0, int16_t y0)
+{
+    return *(color_t *) (bb.buffer + bb.pitch * y0 + (bb.depth / 8) * x0);
+}
+
 bitmap_t *hagl_hal_init(void)
 {
     static uint8_t buffer[BITMAP_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
