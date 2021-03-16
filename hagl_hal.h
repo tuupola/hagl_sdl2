@@ -105,7 +105,7 @@ bitmap_t *hagl_hal_init(void);
  * the drawn pixels automatically. Call this function always when
  * you have finished rendering.
  */
-void hagl_hal_flush();
+size_t hagl_hal_flush();
 
 /**
  * @brief Close and clean up the HAL

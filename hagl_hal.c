@@ -126,11 +126,11 @@ bitmap_t *hagl_hal_init(void)
 /*
  * Flushes the back buffer to the SDL2 window
  */
-void hagl_hal_flush()
+size_t hagl_hal_flush()
 {
     /* Check whether something has been drawn already */
     if (dirty.y1 < dirty.y0) {
-        return;
+        return 0;
     }
 
     SDL_UpdateTexture(texture, NULL, bb.buffer, bb.pitch);
@@ -152,6 +152,8 @@ void hagl_hal_flush()
     dirty.x1 = 0;
     dirty.y0 = DISPLAY_HEIGHT - 1;
     dirty.y1 = 0;
+
+    return DISPLAY_WIDTH * DISPLAY_HEIGHT * DISPLAY_DEPTH / 2;
 }
 
 void hagl_hal_close(void)
