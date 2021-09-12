@@ -24,8 +24,8 @@ SOFTWARE.
 
 -cut-
 
-This file is part of the SDL2 HAL for Copepod graphics library:
-https://github.com/tuupola/copeHAGL_libsdl2
+This file is part of the SDL2 HAL for the HAGL graphics library:
+https://github.com/tuupola/hagl_sdl2
 
 SPDX-License-Identifier: MIT
 

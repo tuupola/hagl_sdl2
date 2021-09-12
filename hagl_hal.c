@@ -25,7 +25,7 @@ SOFTWARE.
 -cut-
 
 This file is part of the SDL2 HAL for the HAGL graphics library:
-https://github.com/tuupola/hagl_libsdl2
+https://github.com/tuupola/hagl_sdl2
 
 SPDX-License-Identifier: MIT
 
