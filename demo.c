@@ -166,7 +166,7 @@ void put_text_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    hagl_put_text(u"YO! MTV raps.", x0, y0, colour, font6x9);
+    hagl_put_text(L"YO! MTV raps.", x0, y0, colour, font6x9);
 }
 
 void put_pixel_demo()
