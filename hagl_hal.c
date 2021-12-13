@@ -84,29 +84,13 @@ bitmap_t *hagl_hal_init(void)
         return NULL;
     }
 
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
-    window = SDL_CreateWindow(
-        "HAGL SDL2",
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        DISPLAY_WIDTH,
-        DISPLAY_HEIGHT,
-        0
-    );
+    if (0 > SDL_Init(SDL_INIT_EVERYTHING)) {
+        printf("Could not initialize SDL: %s\n", SDL_GetError());
 
-    if (NULL == window) {
-        printf("Could not create window: %s\n", SDL_GetError());
-    }
-
-    renderer = SDL_CreateRenderer(
-        window,
-        -1,
-        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
-    );
-
-    if (NULL == renderer) {
-        printf("Could not create renderer: %s\n", SDL_GetError());
-    }
+    };
+    if (0 > SDL_CreateWindowAndRenderer(DISPLAY_WIDTH, DISPLAY_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer)) {
+        printf("Could not create window and renderer: %s\n", SDL_GetError());
+    };
 
     texture = SDL_CreateTexture(
         renderer,
