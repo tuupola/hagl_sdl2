@@ -36,6 +36,7 @@ SPDX-License-Identifier: MIT
 #include <rgb565.h>
 #include <SDL2/SDL.h>
 #include <bitmap.h>
+#include <backend.h>
 #include <window.h>
 
 #include "hagl_hal.h"
@@ -43,6 +44,8 @@ SPDX-License-Identifier: MIT
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
+
+static hagl_backend_t backend;
 
 static bitmap_t bb = {
     .width = DISPLAY_WIDTH,
@@ -57,7 +60,7 @@ static window_t dirty = {
     .y1 = 0,
 };
 
-void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
+static void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
 {
     color_t *ptr = (color_t *) (bb.buffer + bb.pitch * y0 + (bb.depth / 8) * x0);
     *ptr = color;
@@ -70,41 +73,9 @@ void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
     dirty.y1 = max(dirty.y1, y0);
 }
 
-color_t hagl_hal_get_pixel(int16_t x0, int16_t y0)
+static color_t hagl_hal_get_pixel(int16_t x0, int16_t y0)
 {
     return *(color_t *) (bb.buffer + bb.pitch * y0 + (bb.depth / 8) * x0);
-}
-
-bitmap_t *hagl_hal_init(void)
-{
-    static uint8_t buffer[BITMAP_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
-    bitmap_init(&bb, buffer);
-
-    if ((window != NULL) && (renderer != NULL)) {
-        return NULL;
-    }
-
-    if (0 > SDL_Init(SDL_INIT_EVERYTHING)) {
-        printf("Could not initialize SDL: %s\n", SDL_GetError());
-
-    };
-    if (0 > SDL_CreateWindowAndRenderer(DISPLAY_WIDTH, DISPLAY_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer)) {
-        printf("Could not create window and renderer: %s\n", SDL_GetError());
-    };
-
-    texture = SDL_CreateTexture(
-        renderer,
-        SDL_PIXELFORMAT_RGB565,
-        SDL_TEXTUREACCESS_STATIC,
-        DISPLAY_WIDTH,
-        DISPLAY_HEIGHT
-    );
-
-    if (NULL == texture) {
-        printf("Could not create texture: %s\n", SDL_GetError());
-    }
-
-    return &bb;
 }
 
 /*
@@ -152,4 +123,47 @@ color_t hagl_hal_color(uint8_t r, uint8_t g, uint8_t b)
 {
     color_t color = rgb565(r, g, b);
     return (color >> 8) | (color << 8);
+}
+
+hagl_backend_t *hagl_hal_init(void)
+{
+    static uint8_t buffer[BITMAP_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
+    bitmap_init(&bb, buffer);
+
+    memset(&backend, 0, sizeof(backend));
+
+    backend.width = DISPLAY_WIDTH;
+    backend.height = DISPLAY_HEIGHT;
+    backend.put_pixel = hagl_hal_put_pixel;
+    backend.get_pixel = hagl_hal_get_pixel;
+    backend.flush = hagl_hal_flush;
+    backend.close = hagl_hal_close;
+    backend.color = hagl_hal_color;
+
+    if ((window != NULL) && (renderer != NULL)) {
+        return NULL;
+    }
+
+    if (0 > SDL_Init(SDL_INIT_EVERYTHING)) {
+        printf("Could not initialize SDL: %s\n", SDL_GetError());
+
+    };
+    if (0 > SDL_CreateWindowAndRenderer(DISPLAY_WIDTH, DISPLAY_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer)) {
+        printf("Could not create window and renderer: %s\n", SDL_GetError());
+    };
+
+    texture = SDL_CreateTexture(
+        renderer,
+        SDL_PIXELFORMAT_RGB565,
+        SDL_TEXTUREACCESS_STATIC,
+        DISPLAY_WIDTH,
+        DISPLAY_HEIGHT
+    );
+
+    if (NULL == texture) {
+        printf("Could not create texture: %s\n", SDL_GetError());
+    }
+
+
+    return &backend;
 }

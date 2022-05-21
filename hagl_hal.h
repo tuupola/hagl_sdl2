@@ -41,6 +41,9 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <bitmap.h>
+#include <backend.h>
+
+#include "hagl_hal_color.h"
 
 /* HAL must provide display dimensions and depth. */
 #define DISPLAY_WIDTH   (320)
@@ -61,7 +64,6 @@ extern "C" {
 // #define HAGL_HAS_HAL_SCALE_BLIT
 
 /** HAL must provide typedef for colors. This HAL uses RGB565. */
-typedef uint16_t color_t;
 
 /**
  * @brief Draw a single pixel
@@ -72,7 +74,7 @@ typedef uint16_t color_t;
  * @param y0 Y coorginate
  * @param color color
  */
-void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color);
+// void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color);
 
 /**
  * Get a single pixel
@@ -84,7 +86,7 @@ void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color);
  * @param y0
  * @return color at the given location
  */
-color_t hagl_hal_get_pixel(int16_t x0, int16_t y0);
+// color_t hagl_hal_get_pixel(int16_t x0, int16_t y0);
 
 /**
  * @brief Initialize the HAL
@@ -96,7 +98,7 @@ color_t hagl_hal_get_pixel(int16_t x0, int16_t y0);
  *
  * @return pointer to bitmap_t or NULL
  */
-bitmap_t *hagl_hal_init(void);
+hagl_backend_t *hagl_hal_init(void);
 
 /**
  * @brief Output the current frame
@@ -105,7 +107,7 @@ bitmap_t *hagl_hal_init(void);
  * the drawn pixels automatically. Call this function always when
  * you have finished rendering.
  */
-size_t hagl_hal_flush();
+// size_t hagl_hal_flush();
 
 /**
  * @brief Close and clean up the HAL
@@ -113,7 +115,7 @@ size_t hagl_hal_flush();
  * This is used for HAL implementations which need some cleanup, such
  * as deallocating memory, to be done when closing the program.
  */
-void hagl_hal_close(void);
+// void hagl_hal_close(void);
 
 /**
  * @brief Convert RGB to HAL color type
@@ -121,7 +123,7 @@ void hagl_hal_close(void);
  * This is used for HAL implementations which use some other pixel
  * format than RGB565.
  */
-color_t hagl_hal_color(uint8_t r, uint8_t g, uint8_t b);
+// color_t hagl_hal_color(uint8_t r, uint8_t g, uint8_t b);
 
 #ifdef __cplusplus
 }
