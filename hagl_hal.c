@@ -60,7 +60,8 @@ static window_t dirty = {
     .y1 = 0,
 };
 
-static void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
+static void
+hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
 {
     color_t *ptr = (color_t *) (bb.buffer + bb.pitch * y0 + (bb.depth / 8) * x0);
     *ptr = color;
@@ -73,7 +74,8 @@ static void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
     dirty.y1 = max(dirty.y1, y0);
 }
 
-static color_t hagl_hal_get_pixel(int16_t x0, int16_t y0)
+static color_t
+hagl_hal_get_pixel(int16_t x0, int16_t y0)
 {
     return *(color_t *) (bb.buffer + bb.pitch * y0 + (bb.depth / 8) * x0);
 }
@@ -81,7 +83,8 @@ static color_t hagl_hal_get_pixel(int16_t x0, int16_t y0)
 /*
  * Flushes the back buffer to the SDL2 window
  */
-size_t hagl_hal_flush()
+static size_t
+hagl_hal_flush()
 {
     /* Check whether something has been drawn already */
     if (dirty.y1 < dirty.y0) {
@@ -111,7 +114,8 @@ size_t hagl_hal_flush()
     return DISPLAY_WIDTH * DISPLAY_HEIGHT * DISPLAY_DEPTH / 2;
 }
 
-void hagl_hal_close(void)
+static void
+hagl_hal_close(void)
 {
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
@@ -119,18 +123,20 @@ void hagl_hal_close(void)
     SDL_Quit();
 }
 
-color_t hagl_hal_color(uint8_t r, uint8_t g, uint8_t b)
+static color_t
+hagl_hal_color(uint8_t r, uint8_t g, uint8_t b)
 {
     color_t color = rgb565(r, g, b);
     return (color >> 8) | (color << 8);
 }
 
-hagl_backend_t *hagl_hal_init(void)
+hagl_backend_t *
+hagl_hal_init(void)
 {
     static uint8_t buffer[BITMAP_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
     bitmap_init(&bb, buffer);
 
-    memset(&backend, 0, sizeof(backend));
+    memset(&backend, 0, sizeof(hagl_backend_t));
 
     backend.width = DISPLAY_WIDTH;
     backend.height = DISPLAY_HEIGHT;
