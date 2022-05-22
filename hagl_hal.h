@@ -66,64 +66,16 @@ extern "C" {
 /** HAL must provide typedef for colors. This HAL uses RGB565. */
 
 /**
- * @brief Draw a single pixel
- *
- * This is the only mandatory function HAL must provide.
- *
- * @param x0 X coordinate
- * @param y0 Y coorginate
- * @param color color
- */
-// void hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color);
-
-/**
- * Get a single pixel
- *
- * Input will be clipped to the current clip window. In case of
- * error or if HAL does not support this feature returns black.
- *
- * @param x0
- * @param y0
- * @return color at the given location
- */
-// color_t hagl_hal_get_pixel(int16_t x0, int16_t y0);
-
-/**
- * @brief Initialize the HAL
+ * @brief Initialize the backend
  *
  * Initialises all hardware and possible memory buffers needed
- * to draw and display an image. If HAL uses double or triple
+ * to draw and display an image. If backend uses double or triple
  * buffering should return a pointer to current back buffer.
  * This HAL does not use buffering so it returns NULL instead.
  *
  * @return pointer to bitmap_t or NULL
  */
 hagl_backend_t *hagl_hal_init(void);
-
-/**
- * @brief Output the current frame
- *
- * This is used for HAL implementations which do not display
- * the drawn pixels automatically. Call this function always when
- * you have finished rendering.
- */
-// size_t hagl_hal_flush();
-
-/**
- * @brief Close and clean up the HAL
- *
- * This is used for HAL implementations which need some cleanup, such
- * as deallocating memory, to be done when closing the program.
- */
-// void hagl_hal_close(void);
-
-/**
- * @brief Convert RGB to HAL color type
- *
- * This is used for HAL implementations which use some other pixel
- * format than RGB565.
- */
-// color_t hagl_hal_color(uint8_t r, uint8_t g, uint8_t b);
 
 #ifdef __cplusplus
 }
