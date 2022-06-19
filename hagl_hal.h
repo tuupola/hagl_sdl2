@@ -40,7 +40,6 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <bitmap.h>
 #include <backend.h>
 
 #include "hagl_hal_color.h"
@@ -50,32 +49,13 @@ extern "C" {
 #define DISPLAY_HEIGHT  (240)
 #define DISPLAY_DEPTH   (16)
 
-/* These are the optional features this HAL provides. */
-#define HAGL_HAS_HAL_INIT
-#define HAGL_HAS_HAL_FLUSH
-#define HAGL_HAS_HAL_CLOSE
-#define HAGL_HAS_HAL_COLOR
-#define HAGL_HAS_HAL_GET_PIXEL
-
-/* These are the optional features this HAL does not provide. */
-// #define HAGL_HAS_HAL_HLINE
-// #define HAGL_HAS_HAL_VLINE
-// #define HAGL_HAS_HAL_BLIT
-// #define HAGL_HAS_HAL_SCALE_BLIT
-
-/** HAL must provide typedef for colors. This HAL uses RGB565. */
+typedef uint16_t color_t;
 
 /**
  * @brief Initialize the backend
- *
- * Initialises all hardware and possible memory buffers needed
- * to draw and display an image. If backend uses double or triple
- * buffering should return a pointer to current back buffer.
- * This HAL does not use buffering so it returns NULL instead.
- *
- * @return pointer to bitmap_t or NULL
  */
-hagl_backend_t *hagl_hal_init(void);
+void
+hagl_hal_init(hagl_backend_t *backend);
 
 #ifdef __cplusplus
 }

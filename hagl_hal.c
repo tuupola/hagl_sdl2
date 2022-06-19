@@ -45,13 +45,7 @@ static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 
-static hagl_backend_t backend;
-
-static bitmap_t bb = {
-    .width = DISPLAY_WIDTH,
-    .height = DISPLAY_HEIGHT,
-    .depth = DISPLAY_DEPTH,
-};
+static bitmap_t bb;
 
 static window_t dirty = {
     .x0 = DISPLAY_WIDTH - 1,
@@ -61,10 +55,10 @@ static window_t dirty = {
 };
 
 static void
-hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
+put_pixel(void *self, int16_t x0, int16_t y0, color_t color)
 {
-    color_t *ptr = (color_t *) (bb.buffer + bb.pitch * y0 + (bb.depth / 8) * x0);
-    *ptr = color;
+    /* Bitmap already provides a put pixel function. */
+    bb.put_pixel(&bb, x0, y0, color);
 
     /* Tracking dirty window is not needed by HAGL. Below code is included */
     /* as an example if you want to iplement it in your HAL. */
@@ -75,16 +69,17 @@ hagl_hal_put_pixel(int16_t x0, int16_t y0, color_t color)
 }
 
 static color_t
-hagl_hal_get_pixel(int16_t x0, int16_t y0)
+get_pixel(void *self, int16_t x0, int16_t y0)
 {
-    return *(color_t *) (bb.buffer + bb.pitch * y0 + (bb.depth / 8) * x0);
+    /* Bitmap already provides a get pixel function. */
+    return bb.get_pixel(&bb, x0, y0);
 }
 
 /*
  * Flushes the back buffer to the SDL2 window
  */
 static size_t
-hagl_hal_flush()
+flush(void *self)
 {
     /* Check whether something has been drawn already */
     if (dirty.y1 < dirty.y0) {
@@ -111,11 +106,11 @@ hagl_hal_flush()
     dirty.y0 = DISPLAY_HEIGHT - 1;
     dirty.y1 = 0;
 
-    return DISPLAY_WIDTH * DISPLAY_HEIGHT * DISPLAY_DEPTH / 2;
+    return DISPLAY_WIDTH * DISPLAY_HEIGHT * DISPLAY_DEPTH / 8;
 }
 
 static void
-hagl_hal_close(void)
+close(void *self)
 {
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
@@ -124,31 +119,42 @@ hagl_hal_close(void)
 }
 
 static color_t
-hagl_hal_color(uint8_t r, uint8_t g, uint8_t b)
+color(void *self, uint8_t r, uint8_t g, uint8_t b)
 {
     color_t color = rgb565(r, g, b);
     return (color >> 8) | (color << 8);
 }
 
-hagl_backend_t *
-hagl_hal_init(void)
+void
+hagl_hal_init(hagl_backend_t *backend)
 {
-    static uint8_t buffer[BITMAP_SIZE(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_DEPTH)];
-    bitmap_init(&bb, buffer);
-
-    memset(&backend, 0, sizeof(hagl_backend_t));
-
-    backend.width = DISPLAY_WIDTH;
-    backend.height = DISPLAY_HEIGHT;
-    backend.put_pixel = hagl_hal_put_pixel;
-    backend.get_pixel = hagl_hal_get_pixel;
-    backend.flush = hagl_hal_flush;
-    backend.close = hagl_hal_close;
-    backend.color = hagl_hal_color;
-
-    if ((window != NULL) && (renderer != NULL)) {
-        return NULL;
+    if (!backend->buffer) {
+        backend->buffer = calloc(DISPLAY_WIDTH * DISPLAY_HEIGHT * (DISPLAY_DEPTH / 8), sizeof(uint8_t));
+        printf("Allocated back buffer to address %p.\n", (void *) backend->buffer);
+    } else {
+        printf("Using provided back buffer at address %p.\n", (void *) backend->buffer);
     }
+
+    memset(&bb, 0, sizeof(bitmap_t));
+    bb.width = DISPLAY_WIDTH;
+    bb.height = DISPLAY_HEIGHT;
+    bb.depth = DISPLAY_DEPTH;
+
+    bitmap_init(&bb, backend->buffer);
+
+    backend->width = DISPLAY_WIDTH;
+    backend->height = DISPLAY_HEIGHT;
+    backend->depth = DISPLAY_DEPTH;
+    backend->put_pixel = put_pixel;
+    backend->get_pixel = get_pixel;
+    backend->color = color;
+
+    backend->flush = flush;
+    backend->close = close;
+
+    // if ((window != NULL) && (renderer != NULL)) {
+    //     return NULL;
+    // }
 
     if (0 > SDL_Init(SDL_INIT_EVERYTHING)) {
         printf("Could not initialize SDL: %s\n", SDL_GetError());
@@ -169,7 +175,4 @@ hagl_hal_init(void)
     if (NULL == texture) {
         printf("Could not create texture: %s\n", SDL_GetError());
     }
-
-
-    return &backend;
 }

@@ -35,11 +35,17 @@ SPDX-License-Identifier: MIT-0
 #include "hagl.h"
 #include "rgb565.h"
 #include "fps.h"
+#include "aps.h"
 #include "font6x9.h"
+#include "backend.h"
+
+hagl_backend_t *backend;
+static fps_instance_t fps;
+static aps_instance_t pps;
 
 uint32_t flush_callback(uint32_t interval, void *param)
 {
-    hagl_flush();
+    hagl_flush(backend);
     return interval;
 }
 
@@ -64,7 +70,7 @@ void polygon_demo()
     uint16_t colour = rand() % 0xffff;
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
 
-    hagl_draw_polygon(5, vertices, colour);
+    hagl_draw_polygon(backend, 5, vertices, colour);
 }
 
 void fill_polygon_demo()
@@ -82,7 +88,7 @@ void fill_polygon_demo()
     uint16_t colour = rand() % 0xffff;
     int16_t vertices[10] = {x0, y0, x1, y1, x2, y2, x3, y3, x4, y4};
 
-    hagl_fill_polygon(5, vertices, colour);
+    hagl_fill_polygon(backend, 5, vertices, colour);
 }
 
 void circle_demo()
@@ -92,7 +98,7 @@ void circle_demo()
     uint16_t r = (rand() % 40);
     uint16_t colour = rand() % 0xffff;
 
-    hagl_draw_circle(x0, y0, r, colour);
+    hagl_draw_circle(backend, x0, y0, r, colour);
 }
 
 void fill_circle_demo()
@@ -102,7 +108,7 @@ void fill_circle_demo()
     uint16_t r = (rand() % 40);
     uint16_t colour = rand() % 0xffff;
 
-    hagl_fill_circle(x0, y0, r, colour);
+    hagl_fill_circle(backend, x0, y0, r, colour);
 }
 
 void line_demo()
@@ -113,7 +119,7 @@ void line_demo()
     int16_t y1 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    hagl_draw_line(x0, y0, x1, y1, colour);
+    hagl_draw_line(backend, x0, y0, x1, y1, colour);
 }
 
 void rectangle_demo()
@@ -130,7 +136,7 @@ void rectangle_demo()
     int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    hagl_draw_rectangle(x0, y0, x1, y1, colour);
+    hagl_draw_rectangle(backend, x0, y0, x1, y1, colour);
 }
 
 void fill_rectangle_demo()
@@ -147,7 +153,7 @@ void fill_rectangle_demo()
     int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    hagl_fill_rectangle(x0, y0, x1, y1, colour);
+    hagl_fill_rectangle(backend, x0, y0, x1, y1, colour);
 }
 
 void put_character_demo()
@@ -157,7 +163,7 @@ void put_character_demo()
     uint16_t colour = rand() % 0xffff;
     char ascii = rand() % 127;
 
-    hagl_put_char(ascii, x0, y0, colour, font6x9);
+    hagl_put_char(backend, ascii, x0, y0, colour, font6x9);
 }
 
 void put_text_demo()
@@ -166,7 +172,7 @@ void put_text_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    hagl_put_text(L"YO! MTV raps.", x0, y0, colour, font6x9);
+    hagl_put_text(backend, L"YO! MTV raps.", x0, y0, colour, font6x9);
 }
 
 void put_pixel_demo()
@@ -175,7 +181,7 @@ void put_pixel_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    hagl_put_pixel(x0, y0, colour);
+    hagl_put_pixel(backend, x0, y0, colour);
 
 }
 
@@ -189,7 +195,7 @@ void triangle_demo()
     int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    hagl_draw_triangle(x0, y0, x1, y1, x2, y2, colour);
+    hagl_draw_triangle(backend, x0, y0, x1, y1, x2, y2, colour);
 }
 
 void fill_triangle_demo()
@@ -202,7 +208,7 @@ void fill_triangle_demo()
     int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
-    hagl_fill_triangle(x0, y0, x1, y1, x2, y2, colour);
+    hagl_fill_triangle(backend, x0, y0, x1, y1, x2, y2, colour);
 }
 
 void scale_blit_demo()
@@ -218,14 +224,14 @@ void rgb_demo()
     int16_t x1 = DISPLAY_WIDTH / 3;
     int16_t x2 = 2 * x1;
 
-    hagl_fill_rectangle(x0, 0, x1 - 1, DISPLAY_HEIGHT, red);
-    hagl_fill_rectangle(x1, 0, x2 - 1, DISPLAY_HEIGHT, green);
-    hagl_fill_rectangle(x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
+    hagl_fill_rectangle(backend, x0, 0, x1 - 1, DISPLAY_HEIGHT, red);
+    hagl_fill_rectangle(backend, x1, 0, x2 - 1, DISPLAY_HEIGHT, green);
+    hagl_fill_rectangle(backend, x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
 }
 
 int main()
 {
-    hagl_init();
+    backend = hagl_init();
     //pod_set_clip_window(0, 30, 319, 210);
     srand(time(0));
 
@@ -234,8 +240,13 @@ int main()
     uint16_t current_demo = 0;
     float current_pps = 0.0; /* primitives per secod */
 
-    SDL_TimerID flush_id = SDL_AddTimer(flush_delay, flush_callback, NULL);
-    SDL_TimerID pps_id = SDL_AddTimer(pps_delay, pps_callback, &current_pps);
+
+
+    SDL_TimerID pps_id;
+    SDL_TimerID flush_id;
+
+    flush_id = SDL_AddTimer(flush_delay, flush_callback, NULL);
+    pps_id = SDL_AddTimer(pps_delay, pps_callback, &pps.current);
 
     bool quit = false;
     SDL_Event event;
@@ -259,10 +270,12 @@ int main()
     printf("Press any key to change demo.\n");
     printf("Press ESC to quit.\n\n");
 
-    while (!quit) {
+    aps_init(&pps);
 
+    while (!quit) {
+        hagl_flush(backend);
         (*demo[current_demo])();
-        current_pps = fps();
+        aps_update(&pps, 1);
         //SDL_Delay(100);
         if (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -272,8 +285,8 @@ int main()
                 if (SDLK_ESCAPE ==event.key.keysym.sym) {
                     quit = true;
                 } else {
-                    //fps_reset();
-                    hagl_clear_screen();
+                    aps_reset(&pps);
+                    hagl_clear_screen(backend);
                     current_demo = (current_demo + 1) % 12;
                 }
             }
@@ -282,6 +295,6 @@ int main()
 
     SDL_RemoveTimer(flush_id);
     SDL_RemoveTimer(pps_id);
-    hagl_close();
+    hagl_close(backend);
     return 0;
 }
