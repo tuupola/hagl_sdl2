@@ -147,6 +147,7 @@ hagl_hal_init(hagl_backend_t *backend)
     backend->depth = DISPLAY_DEPTH;
     backend->put_pixel = put_pixel;
     backend->get_pixel = get_pixel;
+    backend->color = color;
 
     backend->flush = flush;
     backend->close = close;
