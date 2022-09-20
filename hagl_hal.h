@@ -40,7 +40,7 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <backend.h>
+#include <hagl/backend.h>
 
 #include "hagl_hal_color.h"
 

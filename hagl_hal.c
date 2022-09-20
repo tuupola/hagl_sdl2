@@ -35,9 +35,9 @@ SPDX-License-Identifier: MIT
 #include <stdbool.h>
 #include <rgb565.h>
 #include <SDL2/SDL.h>
-#include <bitmap.h>
-#include <backend.h>
-#include <window.h>
+#include <hagl/bitmap.h>
+#include <hagl/backend.h>
+#include <hagl/window.h>
 
 #include "hagl_hal.h"
 
@@ -45,9 +45,9 @@ static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 
-static bitmap_t bb;
+static hagl_bitmap_t bb;
 
-static window_t dirty = {
+static hagl_window_t dirty = {
     .x0 = DISPLAY_WIDTH - 1,
     .y0 = DISPLAY_HEIGHT - 1,
     .x1 = 0,
@@ -135,7 +135,7 @@ hagl_hal_init(hagl_backend_t *backend)
         printf("Using provided back buffer at address %p.\n", (void *) backend->buffer);
     }
 
-    memset(&bb, 0, sizeof(bitmap_t));
+    memset(&bb, 0, sizeof(hagl_bitmap_t));
     bb.width = DISPLAY_WIDTH;
     bb.height = DISPLAY_HEIGHT;
     bb.depth = DISPLAY_DEPTH;
