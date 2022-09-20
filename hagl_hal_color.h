@@ -31,33 +31,19 @@ SPDX-License-Identifier: MIT
 
 */
 
-#ifndef _HAGL_SDL2_HAL_H
-#define _HAGL_SDL2_HAL_H
+#ifndef _HAGL_SDL2_HAL_COLOR_H
+#define _HAGL_SDL2_HAL_COLOR_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include <stdint.h>
-#include <stdbool.h>
-#include <hagl/backend.h>
 
-#include "hagl_hal_color.h"
-
-/* HAL must provide display dimensions and depth. */
-#define DISPLAY_WIDTH   (320)
-#define DISPLAY_HEIGHT  (240)
-#define DISPLAY_DEPTH   (16)
-
+/** HAL must provide typedef for colors. This HAL uses RGB565. */
 typedef uint16_t color_t;
-
-/**
- * @brief Initialize the backend
- */
-void
-hagl_hal_init(hagl_backend_t *backend);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* _HAGL_SDL2_HAL_H */
+#endif /* _HAGL_SDL2_HAL_COLOR_H */
