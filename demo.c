@@ -161,7 +161,7 @@ void put_character_demo()
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
-    char ascii = rand() % 127;
+    wchar_t ascii = rand() % 127;
 
     hagl_put_char(backend, ascii, x0, y0, colour, font6x9);
 }
@@ -182,7 +182,6 @@ void put_pixel_demo()
     uint16_t colour = rand() % 0xffff;
 
     hagl_put_pixel(backend, x0, y0, colour);
-
 }
 
 void triangle_demo()
@@ -232,15 +231,13 @@ void rgb_demo()
 int main()
 {
     backend = hagl_init();
-    //pod_set_clip_window(0, 30, 319, 210);
+    // pod_set_clip_window(0, 30, 319, 210);
     srand(time(0));
 
     uint32_t flush_delay = 1000 / 30; /* 30 fps */
-    uint32_t pps_delay = 2000; /* 0.5 fps */
+    uint32_t pps_delay = 2000;        /* 0.5 fps */
     uint16_t current_demo = 0;
-    float current_pps = 0.0; /* primitives per secod */
-
-
+    float current_pps = 0.0; /* primitives per second */
 
     SDL_TimerID pps_id;
     SDL_TimerID flush_id;
@@ -251,7 +248,7 @@ int main()
     bool quit = false;
     SDL_Event event;
 
-    void (*demo[13]) ();
+    void (*demo[13])();
     demo[0] = rgb_demo;
     demo[1] = put_character_demo;
     demo[2] = put_pixel_demo;
@@ -272,21 +269,35 @@ int main()
 
     aps_init(&pps);
 
-    while (!quit) {
+    while (!quit)
+    {
+        // printf("BEFORE FLUSH\n");
         hagl_flush(backend);
+        // printf("BEFORE DEMO\n");
         (*demo[current_demo])();
+        // printf("BEFORE APS\n");
         aps_update(&pps, 1);
-        //SDL_Delay(100);
-        if (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+        // SDL_Delay(100);
+        // printf("BEFORE POLL\n");
+        if (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
                 quit = true;
             }
-            if (event.type == SDL_KEYDOWN) {
-                if (SDLK_ESCAPE ==event.key.keysym.sym) {
+            if (event.type == SDL_KEYDOWN)
+            {
+                if (SDLK_ESCAPE == event.key.keysym.sym)
+                {
                     quit = true;
-                } else {
+                }
+                else
+                {
+                    // printf("BEFORE APS\n");
                     aps_reset(&pps);
-                    hagl_clear_screen(backend);
+                    // printf("BEFORE CLEAR\n");
+                    hagl_clear(backend);
+                    // printf("BEFORE INC DEMO\n");
                     current_demo = (current_demo + 1) % 12;
                 }
             }
