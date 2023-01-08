@@ -220,12 +220,12 @@ void rgb_demo()
     uint16_t green = rgb565(0, 255, 0);
     uint16_t blue = rgb565(0, 0, 255);
     int16_t x0 = 0;
-    int16_t x1 = DISPLAY_WIDTH / 3;
+    int16_t x1 = backend->width / 3;
     int16_t x2 = 2 * x1;
 
-    hagl_fill_rectangle(backend, x0, 0, x1 - 1, DISPLAY_HEIGHT, red);
-    hagl_fill_rectangle(backend, x1, 0, x2 - 1, DISPLAY_HEIGHT, green);
-    hagl_fill_rectangle(backend, x2, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, blue);
+    hagl_fill_rectangle(backend, x0, 0, x1 - 1, backend->height, red);
+    hagl_fill_rectangle(backend, x1, 0, x2 - 1, backend->height, green);
+    hagl_fill_rectangle(backend, x2, 0, backend->width, backend->height, blue);
 }
 
 int main()
@@ -271,14 +271,10 @@ int main()
 
     while (!quit)
     {
-        // printf("BEFORE FLUSH\n");
-        hagl_flush(backend);
-        // printf("BEFORE DEMO\n");
+        // hagl_flush(backend);
         (*demo[current_demo])();
-        // printf("BEFORE APS\n");
         aps_update(&pps, 1);
         // SDL_Delay(100);
-        // printf("BEFORE POLL\n");
         if (SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT)
@@ -293,12 +289,9 @@ int main()
                 }
                 else
                 {
-                    // printf("BEFORE APS\n");
                     aps_reset(&pps);
-                    // printf("BEFORE CLEAR\n");
                     hagl_clear(backend);
-                    // printf("BEFORE INC DEMO\n");
-                    current_demo = (current_demo + 1) % 12;
+                    current_demo = (current_demo + 1) % 13;
                 }
             }
         }
