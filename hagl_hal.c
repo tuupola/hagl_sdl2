@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2019-2021 Mika Tuupola
+Copyright (c) 2019-2023 Mika Tuupola
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -48,8 +48,8 @@ static SDL_Texture *texture = NULL;
 static hagl_bitmap_t bb;
 
 static hagl_window_t dirty = {
-    .x0 = DISPLAY_WIDTH - 1,
-    .y0 = DISPLAY_HEIGHT - 1,
+    .x0 = UINT16_MAX,// DISPLAY_WIDTH - 1,
+    .y0 = UINT16_MAX,// DISPLAY_HEIGHT - 1,
     .x1 = 0,
     .y1 = 0,
 };
@@ -101,9 +101,9 @@ flush(void *self)
     // );
 
     /* Reset dirty window */
-    dirty.x0 = DISPLAY_WIDTH - 1;
+    dirty.x0 = UINT16_MAX,// DISPLAY_WIDTH - 1;
     dirty.x1 = 0;
-    dirty.y0 = DISPLAY_HEIGHT - 1;
+    dirty.y0 = UINT16_MAX,// DISPLAY_HEIGHT - 1;
     dirty.y1 = 0;
 
     return DISPLAY_WIDTH * DISPLAY_HEIGHT * DISPLAY_DEPTH / 8;
