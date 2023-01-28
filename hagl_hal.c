@@ -153,7 +153,7 @@ hagl_hal_init(hagl_backend_t *backend)
     backend->close = close;
 
     // if ((window != NULL) && (renderer != NULL)) {
-    //     return NULL;
+    //     printf("Window or renderer is null: %s\n", SDL_GetError());
     // }
 
     if (0 > SDL_Init(SDL_INIT_EVERYTHING)) {
