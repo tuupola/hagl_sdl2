@@ -47,25 +47,11 @@ static SDL_Texture *texture = NULL;
 
 static hagl_bitmap_t bb;
 
-static hagl_window_t dirty = {
-    .x0 = UINT16_MAX,// DISPLAY_WIDTH - 1,
-    .y0 = UINT16_MAX,// DISPLAY_HEIGHT - 1,
-    .x1 = 0,
-    .y1 = 0,
-};
-
 static void
 put_pixel(void *self, int16_t x0, int16_t y0, color_t color)
 {
     /* Bitmap already provides a put pixel function. */
     bb.put_pixel(&bb, x0, y0, color);
-
-    /* Tracking dirty window is not needed by HAGL. Below code is included */
-    /* as an example if you want to iplement it in your HAL. */
-    dirty.x0 = min(dirty.x0, x0);
-    dirty.x1 = max(dirty.x1, x0);
-    dirty.y0 = min(dirty.y0, y0);
-    dirty.y1 = max(dirty.y1, y0);
 }
 
 static color_t
@@ -81,30 +67,10 @@ get_pixel(void *self, int16_t x0, int16_t y0)
 static size_t
 flush(void *self)
 {
-    /* Check whether something has been drawn already */
-    if (dirty.y1 < dirty.y0) {
-        return 0;
-    }
-
     SDL_UpdateTexture(texture, NULL, bb.buffer, bb.pitch);
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
-
-    // printf("Dirty %d,%d %d,%d (%d,%d)\n",
-    //     dirty.x0,
-    //     dirty.y0,
-    //     dirty.x1,
-    //     dirty.y1,
-    //     dirty.x1 - dirty.x0 + 1,
-    //     dirty.y1 - dirty.y0 + 1
-    // );
-
-    /* Reset dirty window */
-    dirty.x0 = UINT16_MAX,// DISPLAY_WIDTH - 1;
-    dirty.x1 = 0;
-    dirty.y0 = UINT16_MAX,// DISPLAY_HEIGHT - 1;
-    dirty.y1 = 0;
 
     return DISPLAY_WIDTH * DISPLAY_HEIGHT * DISPLAY_DEPTH / 8;
 }
@@ -151,10 +117,6 @@ hagl_hal_init(hagl_backend_t *backend)
 
     backend->flush = flush;
     backend->close = close;
-
-    // if ((window != NULL) && (renderer != NULL)) {
-    //     return NULL;
-    // }
 
     if (0 > SDL_Init(SDL_INIT_EVERYTHING)) {
         printf("Could not initialize SDL: %s\n", SDL_GetError());

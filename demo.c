@@ -34,20 +34,14 @@ SPDX-License-Identifier: MIT-0
 #include "hagl_hal.h"
 #include "hagl.h"
 #include "rgb565.h"
-#include "fps.h"
 #include "aps.h"
 #include "font6x9.h"
 #include "backend.h"
 
 hagl_backend_t *backend;
-static fps_instance_t fps;
 static aps_instance_t pps;
 
-uint32_t flush_callback(uint32_t interval, void *param)
-{
-    hagl_flush(backend);
-    return interval;
-}
+static const uint64_t MS_PER_FRAME_60_FPS = 1000 / 60;
 
 uint32_t pps_callback(uint32_t interval, void *param)
 {
@@ -231,18 +225,13 @@ void rgb_demo()
 int main()
 {
     backend = hagl_init();
-    // pod_set_clip_window(0, 30, 319, 210);
     srand(time(0));
 
-    uint32_t flush_delay = 1000 / 30; /* 30 fps */
-    uint32_t pps_delay = 2000;        /* 0.5 fps */
-    uint16_t current_demo = 0;
+    uint32_t pps_delay = 2000; /* 0.5 fps */
+    uint16_t current_demo = 1;
     float current_pps = 0.0; /* primitives per second */
 
     SDL_TimerID pps_id;
-    SDL_TimerID flush_id;
-
-    flush_id = SDL_AddTimer(flush_delay, flush_callback, NULL);
     pps_id = SDL_AddTimer(pps_delay, pps_callback, &pps.current);
 
     bool quit = false;
@@ -269,12 +258,21 @@ int main()
 
     aps_init(&pps);
 
+    uint32_t start = SDL_GetTicks();
+
     while (!quit)
     {
-        // hagl_flush(backend);
         (*demo[current_demo])();
         aps_update(&pps, 1);
-        // SDL_Delay(100);
+
+        uint32_t end = SDL_GetTicks();
+        int32_t delta = MS_PER_FRAME_60_FPS - (end - start);
+
+        if (delta < 0) {
+            hagl_flush(backend);
+            start = SDL_GetTicks();
+        }
+
         if (SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT)
@@ -297,7 +295,6 @@ int main()
         }
     }
 
-    SDL_RemoveTimer(flush_id);
     SDL_RemoveTimer(pps_id);
     hagl_close(backend);
     return 0;
