@@ -14,7 +14,7 @@ Simple demonstration displaying different graphics primitives.
 $ git clone https://github.com/tuupola/hagl.git
 $ git clone https://github.com/tuupola/hagl_sdl2.git
 $ cd hagl_sdl2
-$ make && ./demo
+$ make clean && make && ./demo
 ```
 
 Slightly more interesting demo displaying old school [demo effects](https://github.com/tuupola/sdl2_effects).
@@ -22,7 +22,7 @@ Slightly more interesting demo displaying old school [demo effects](https://gith
 ```
 $ git clone --recursive https://github.com/tuupola/sdl2_effects.git
 $ cd sdl2_effects
-$ make && ./demo
+$ make clean && make && ./demo
 ```
 
 
