@@ -127,12 +127,12 @@ hagl_hal_init(hagl_backend_t *backend)
     };
 
     texture = SDL_CreateTexture(
-        renderer,
-        SDL_PIXELFORMAT_RGB565,
-        SDL_TEXTUREACCESS_STATIC,
-        DISPLAY_WIDTH,
-        DISPLAY_HEIGHT
-    );
+            renderer,
+            SDL_PIXELFORMAT_RGB565,
+            SDL_TEXTUREACCESS_STATIC,
+            DISPLAY_WIDTH,
+            DISPLAY_HEIGHT
+        );
 
     if (NULL == texture) {
         printf("Could not create texture: %s\n", SDL_GetError());

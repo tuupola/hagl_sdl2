@@ -4,7 +4,7 @@ This is an [SDL2](https://www.libsdl.org/) HAL for the lightweight hardware agno
 ). This repository serves as an example on how to create a simple HAL.
 
 
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 # Demo
 
@@ -17,4 +17,4 @@ $ make && ./demo
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.txt) for more information.
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
