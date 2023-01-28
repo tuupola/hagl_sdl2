@@ -228,7 +228,7 @@ int main()
     srand(time(0));
 
     uint32_t pps_delay = 2000; /* 0.5 fps */
-    uint16_t current_demo = 0;
+    uint16_t current_demo = 1;
     float current_pps = 0.0; /* primitives per second */
 
     SDL_TimerID pps_id;
