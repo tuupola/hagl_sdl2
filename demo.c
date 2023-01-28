@@ -43,13 +43,15 @@ static aps_instance_t pps;
 
 static const uint64_t MS_PER_FRAME_60_FPS = 1000 / 60;
 
-uint32_t pps_callback(uint32_t interval, void *param)
+uint32_t
+pps_callback(uint32_t interval, void *param)
 {
     printf("Primitives per second: %f\n", *(float *)param);
     return interval;
 }
 
-void polygon_demo()
+void
+polygon_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -67,7 +69,8 @@ void polygon_demo()
     hagl_draw_polygon(backend, 5, vertices, colour);
 }
 
-void fill_polygon_demo()
+void
+fill_polygon_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -85,7 +88,8 @@ void fill_polygon_demo()
     hagl_fill_polygon(backend, 5, vertices, colour);
 }
 
-void circle_demo()
+void
+circle_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -95,7 +99,8 @@ void circle_demo()
     hagl_draw_circle(backend, x0, y0, r, colour);
 }
 
-void fill_circle_demo()
+void
+fill_circle_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -105,7 +110,8 @@ void fill_circle_demo()
     hagl_fill_circle(backend, x0, y0, r, colour);
 }
 
-void line_demo()
+void
+line_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -116,7 +122,8 @@ void line_demo()
     hagl_draw_line(backend, x0, y0, x1, y1, colour);
 }
 
-void rectangle_demo()
+void
+rectangle_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -133,7 +140,8 @@ void rectangle_demo()
     hagl_draw_rectangle(backend, x0, y0, x1, y1, colour);
 }
 
-void fill_rectangle_demo()
+void
+fill_rectangle_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -150,7 +158,8 @@ void fill_rectangle_demo()
     hagl_fill_rectangle(backend, x0, y0, x1, y1, colour);
 }
 
-void put_character_demo()
+void
+put_character_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -160,7 +169,8 @@ void put_character_demo()
     hagl_put_char(backend, ascii, x0, y0, colour, font6x9);
 }
 
-void put_text_demo()
+void
+put_text_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -169,7 +179,8 @@ void put_text_demo()
     hagl_put_text(backend, L"YO! MTV raps.", x0, y0, colour, font6x9);
 }
 
-void put_pixel_demo()
+void
+put_pixel_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -178,7 +189,8 @@ void put_pixel_demo()
     hagl_put_pixel(backend, x0, y0, colour);
 }
 
-void triangle_demo()
+void
+triangle_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -191,7 +203,8 @@ void triangle_demo()
     hagl_draw_triangle(backend, x0, y0, x1, y1, x2, y2, colour);
 }
 
-void fill_triangle_demo()
+void
+fill_triangle_demo()
 {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -204,11 +217,13 @@ void fill_triangle_demo()
     hagl_fill_triangle(backend, x0, y0, x1, y1, x2, y2, colour);
 }
 
-void scale_blit_demo()
+void
+scale_blit_demo()
 {
 }
 
-void rgb_demo()
+void
+rgb_demo()
 {
     uint16_t red = rgb565(255, 0, 0);
     uint16_t green = rgb565(0, 255, 0);
@@ -222,7 +237,8 @@ void rgb_demo()
     hagl_fill_rectangle(backend, x2, 0, backend->width, backend->height, blue);
 }
 
-int main()
+int
+main()
 {
     backend = hagl_init();
     srand(time(0));
@@ -260,8 +276,7 @@ int main()
 
     uint32_t start = SDL_GetTicks();
 
-    while (!quit)
-    {
+    while (!quit) {
         (*demo[current_demo])();
         aps_update(&pps, 1);
 
@@ -273,20 +288,14 @@ int main()
             start = SDL_GetTicks();
         }
 
-        if (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT)
-            {
+        if (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
                 quit = true;
             }
-            if (event.type == SDL_KEYDOWN)
-            {
-                if (SDLK_ESCAPE == event.key.keysym.sym)
-                {
+            if (event.type == SDL_KEYDOWN) {
+                if (SDLK_ESCAPE == event.key.keysym.sym) {
                     quit = true;
-                }
-                else
-                {
+                } else {
                     aps_reset(&pps);
                     hagl_clear(backend);
                     current_demo = (current_demo + 1) % 13;
