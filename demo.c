@@ -34,13 +34,11 @@ SPDX-License-Identifier: MIT-0
 #include "hagl_hal.h"
 #include "hagl.h"
 #include "rgb565.h"
-#include "fps.h"
 #include "aps.h"
 #include "font6x9.h"
 #include "backend.h"
 
 hagl_backend_t *backend;
-static fps_instance_t fps;
 static aps_instance_t pps;
 
 static const uint64_t MS_PER_FRAME_60_FPS = 1000 / 60;
@@ -229,7 +227,7 @@ int main()
     backend = hagl_init();
     srand(time(0));
 
-    uint32_t pps_delay = 2000;        /* 0.5 fps */
+    uint32_t pps_delay = 2000; /* 0.5 fps */
     uint16_t current_demo = 0;
     float current_pps = 0.0; /* primitives per second */
 
