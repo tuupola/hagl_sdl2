@@ -72,7 +72,7 @@ flush(void *self)
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
 
-    return DISPLAY_WIDTH * DISPLAY_HEIGHT * DISPLAY_DEPTH / 8;
+    return bb.size;
 }
 
 static void
@@ -95,22 +95,22 @@ void
 hagl_hal_init(hagl_backend_t *backend)
 {
     if (!backend->buffer) {
-        backend->buffer = calloc(DISPLAY_WIDTH * DISPLAY_HEIGHT * (DISPLAY_DEPTH / 8), sizeof(uint8_t));
+        backend->buffer = calloc(HAGL_SDL2_DISPLAY_WIDTH * HAGL_SDL2_DISPLAY_HEIGHT * (HAGL_SDL2_DISPLAY_DEPTH / 8), sizeof(uint8_t));
         printf("Allocated back buffer to address %p.\n", (void *) backend->buffer);
     } else {
         printf("Using provided back buffer at address %p.\n", (void *) backend->buffer);
     }
 
     memset(&bb, 0, sizeof(hagl_bitmap_t));
-    bb.width = DISPLAY_WIDTH;
-    bb.height = DISPLAY_HEIGHT;
-    bb.depth = DISPLAY_DEPTH;
+    bb.width = HAGL_SDL2_DISPLAY_WIDTH;
+    bb.height = HAGL_SDL2_DISPLAY_HEIGHT;
+    bb.depth = HAGL_SDL2_DISPLAY_DEPTH;
 
     bitmap_init(&bb, backend->buffer);
 
-    backend->width = DISPLAY_WIDTH;
-    backend->height = DISPLAY_HEIGHT;
-    backend->depth = DISPLAY_DEPTH;
+    backend->width = HAGL_SDL2_DISPLAY_WIDTH;
+    backend->height = HAGL_SDL2_DISPLAY_HEIGHT;
+    backend->depth = HAGL_SDL2_DISPLAY_DEPTH;
     backend->put_pixel = put_pixel;
     backend->get_pixel = get_pixel;
     backend->color = color;
@@ -122,7 +122,7 @@ hagl_hal_init(hagl_backend_t *backend)
         printf("Could not initialize SDL: %s\n", SDL_GetError());
 
     };
-    if (0 > SDL_CreateWindowAndRenderer(DISPLAY_WIDTH, DISPLAY_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer)) {
+    if (0 > SDL_CreateWindowAndRenderer(HAGL_SDL2_DISPLAY_WIDTH, HAGL_SDL2_DISPLAY_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer)) {
         printf("Could not create window and renderer: %s\n", SDL_GetError());
     };
 
@@ -130,8 +130,8 @@ hagl_hal_init(hagl_backend_t *backend)
             renderer,
             SDL_PIXELFORMAT_RGB565,
             SDL_TEXTUREACCESS_STATIC,
-            DISPLAY_WIDTH,
-            DISPLAY_HEIGHT
+            HAGL_SDL2_DISPLAY_WIDTH,
+            HAGL_SDL2_DISPLAY_HEIGHT
         );
 
     if (NULL == texture) {
