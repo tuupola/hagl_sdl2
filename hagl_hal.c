@@ -101,13 +101,6 @@ hagl_hal_init(hagl_backend_t *backend)
         printf("Using provided back buffer at address %p.\n", (void *) backend->buffer);
     }
 
-    memset(&bb, 0, sizeof(hagl_bitmap_t));
-    bb.width = HAGL_SDL2_DISPLAY_WIDTH;
-    bb.height = HAGL_SDL2_DISPLAY_HEIGHT;
-    bb.depth = HAGL_SDL2_DISPLAY_DEPTH;
-
-    bitmap_init(&bb, backend->buffer);
-
     backend->width = HAGL_SDL2_DISPLAY_WIDTH;
     backend->height = HAGL_SDL2_DISPLAY_HEIGHT;
     backend->depth = HAGL_SDL2_DISPLAY_DEPTH;
@@ -117,6 +110,8 @@ hagl_hal_init(hagl_backend_t *backend)
 
     backend->flush = flush;
     backend->close = close;
+
+    hagl_bitmap_init(&bb, backend->width, backend->height, backend->depth, backend->buffer);
 
     if (0 > SDL_Init(SDL_INIT_EVERYTHING)) {
         printf("Could not initialize SDL: %s\n", SDL_GetError());
