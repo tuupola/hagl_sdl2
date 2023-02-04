@@ -217,9 +217,21 @@ fill_triangle_demo()
     hagl_fill_triangle(backend, x0, y0, x1, y1, x2, y2, colour);
 }
 
+
 void
-scale_blit_demo()
+blit_xywh_demo()
 {
+    hagl_bitmap_t bitmap;
+    bitmap.buffer = (uint8_t *) malloc(6 * 9 * sizeof(color_t));
+
+    int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
+    int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
+    uint16_t colour = rand() % 0xffff;
+    wchar_t ascii = rand() % 127;
+
+    if (0 == hagl_get_glyph(backend, ascii, colour, &bitmap, font6x9)) {
+        hagl_blit_xywh(backend, x0, y0, 24, 36, &bitmap);
+    }
 }
 
 void
@@ -237,6 +249,7 @@ rgb_demo()
     hagl_fill_rectangle(backend, x2, 0, backend->width, backend->height, blue);
 }
 
+
 int
 main()
 {
@@ -253,7 +266,7 @@ main()
     bool quit = false;
     SDL_Event event;
 
-    void (*demo[13])();
+    void (*demo[14])();
     demo[0] = rgb_demo;
     demo[1] = put_character_demo;
     demo[2] = put_pixel_demo;
@@ -267,6 +280,7 @@ main()
     demo[10] = polygon_demo;
     demo[11] = fill_polygon_demo;
     demo[12] = put_text_demo;
+    demo[13] = blit_xywh_demo;
 
     printf("\n");
     printf("Press any key to change demo.\n");
@@ -298,7 +312,7 @@ main()
                 } else {
                     aps_reset(&pps);
                     hagl_clear(backend);
-                    current_demo = (current_demo + 1) % 13;
+                    current_demo = (current_demo + 1) % 14;
                 }
             }
         }
