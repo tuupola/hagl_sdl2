@@ -48,13 +48,13 @@ static SDL_Texture *texture = NULL;
 static hagl_bitmap_t bb;
 
 static void
-put_pixel(void *self, int16_t x0, int16_t y0, color_t color)
+put_pixel(void *self, int16_t x0, int16_t y0, hagl_color_t color)
 {
     /* Bitmap already provides a put pixel function. */
     bb.put_pixel(&bb, x0, y0, color);
 }
 
-static color_t
+static hagl_color_t
 get_pixel(void *self, int16_t x0, int16_t y0)
 {
     /* Bitmap already provides a get pixel function. */
@@ -84,10 +84,10 @@ close(void *self)
     SDL_Quit();
 }
 
-static color_t
+static hagl_color_t
 color(void *self, uint8_t r, uint8_t g, uint8_t b)
 {
-    color_t color = rgb565(r, g, b);
+    hagl_color_t color = rgb565(r, g, b);
     return (color >> 8) | (color << 8);
 }
 

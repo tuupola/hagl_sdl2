@@ -41,7 +41,7 @@ extern "C" {
 #include <stdint.h>
 
 /** HAL must provide typedef for colors. This HAL uses RGB565. */
-typedef uint16_t color_t;
+typedef uint16_t hagl_color_t;
 
 #ifdef __cplusplus
 }

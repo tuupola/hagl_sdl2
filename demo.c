@@ -222,7 +222,7 @@ void
 blit_xywh_demo()
 {
     hagl_bitmap_t bitmap;
-    bitmap.buffer = (uint8_t *) malloc(6 * 9 * sizeof(color_t));
+    bitmap.buffer = (uint8_t *) malloc(6 * 9 * sizeof(hagl_color_t));
 
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
