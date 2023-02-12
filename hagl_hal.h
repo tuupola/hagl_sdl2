@@ -48,7 +48,7 @@ extern "C" {
 #define HAGL_SDL2_DISPLAY_WIDTH     (320)
 #define HAGL_SDL2_DISPLAY_HEIGHT    (240)
 #define HAGL_SDL2_DISPLAY_DEPTH     (16)
-#define HAGL_CHAR_BUFFER_SIZE       (16 * 16 * HAGL_SDL2_DISPLAY_DEPTH / 2)
+#define HAGL_CHAR_BUFFER_SIZE       (16 * 16 * HAGL_SDL2_DISPLAY_DEPTH / 8)
 
 typedef uint16_t color_t;
 
