@@ -64,12 +64,12 @@ grid_test()
     hagl_draw_vline(backend, 0, 0, backend->height - 1, green);
     hagl_draw_vline(backend, backend->width - 1, 0, backend->height - 1, green);
 
-    for (int16_t x = 0; x <= backend->width; x += 16) {
-        hagl_draw_vline(backend, x, 0, backend->height - 1, green);
+    for (int16_t x = 16; x < backend->width; x += 16) {
+        hagl_draw_vline(backend, x, 0, backend->height - 1, red);
     }
 
-    for (int16_t y = 0; y <= backend->height; y += 16) {
-        hagl_draw_hline(backend, 0, y, backend->width - 1, green);
+    for (int16_t y = 16; y < backend->height; y += 16) {
+        hagl_draw_hline(backend, 0, y, backend->width - 1, red);
     }
 }
 
