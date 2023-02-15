@@ -33,7 +33,6 @@ SPDX-License-Identifier: MIT-0
 
 #include "hagl_hal.h"
 #include "hagl.h"
-#include "rgb565.h"
 #include "aps.h"
 #include "font6x9.h"
 #include "backend.h"
@@ -260,9 +259,9 @@ blit_xywh_demo()
 void
 rgb_demo()
 {
-    uint16_t red = rgb565(255, 0, 0);
-    uint16_t green = rgb565(0, 255, 0);
-    uint16_t blue = rgb565(0, 0, 255);
+    uint16_t red = hagl_color(backend, 255, 0, 0);
+    uint16_t green = hagl_color(backend, 0, 255, 0);
+    uint16_t blue = hagl_color(backend, 0, 0, 255);
     int16_t x0 = 0;
     int16_t x1 = backend->width / 3;
     int16_t x2 = 2 * x1;
