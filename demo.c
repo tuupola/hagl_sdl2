@@ -50,6 +50,29 @@ pps_callback(uint32_t interval, void *param)
     return interval;
 }
 
+
+void
+grid_test()
+{
+    uint16_t red = hagl_color(backend, 255, 0, 0);
+    uint16_t green = hagl_color(backend, 0, 255, 0);
+    uint16_t blue = hagl_color(backend, 0, 0, 255);
+
+    hagl_draw_rectangle(backend, 0, 0, backend->width - 1, backend->height - 1, red);
+    hagl_draw_hline(backend, 0, 0, backend->width - 1, green);
+    hagl_draw_hline(backend, 0, backend->height - 1, backend->width - 1, green);
+    hagl_draw_vline(backend, 0, 0, backend->height - 1, green);
+    hagl_draw_vline(backend, backend->width - 1, 0, backend->height - 1, green);
+
+    for (int16_t x = 0; x <= backend->width; x += 16) {
+        hagl_draw_vline(backend, x, 0, backend->height - 1, green);
+    }
+
+    for (int16_t y = 0; y <= backend->height; y += 16) {
+        hagl_draw_hline(backend, 0, y, backend->width - 1, green);
+    }
+}
+
 void
 polygon_demo()
 {
@@ -257,7 +280,7 @@ main()
     srand(time(0));
 
     uint32_t pps_delay = 2000; /* 0.5 fps */
-    uint16_t current_demo = 1;
+    uint16_t current_demo = 0;
     float current_pps = 0.0; /* primitives per second */
 
     SDL_TimerID pps_id;
@@ -266,7 +289,7 @@ main()
     bool quit = false;
     SDL_Event event;
 
-    void (*demo[14])();
+    void (*demo[15])();
     demo[0] = rgb_demo;
     demo[1] = put_character_demo;
     demo[2] = put_pixel_demo;
@@ -281,6 +304,7 @@ main()
     demo[11] = fill_polygon_demo;
     demo[12] = put_text_demo;
     demo[13] = blit_xywh_demo;
+    demo[14] = grid_test;
 
     printf("\n");
     printf("Press any key to change demo.\n");
@@ -312,7 +336,7 @@ main()
                 } else {
                     aps_reset(&pps);
                     hagl_clear(backend);
-                    current_demo = (current_demo + 1) % 14;
+                    current_demo = (current_demo + 1) % 15;
                 }
             }
         }
