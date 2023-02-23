@@ -33,6 +33,7 @@ SPDX-License-Identifier: MIT
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <rgb332.h>
 #include <rgb565.h>
 #include <SDL2/SDL.h>
 #include <hagl/bitmap.h>
@@ -87,8 +88,12 @@ close(void *self)
 static hagl_color_t
 color(void *self, uint8_t r, uint8_t g, uint8_t b)
 {
+#ifdef HAGL_HAL_RGB332
+    return rgb332(r, g, b);
+#else
     hagl_color_t color = rgb565(r, g, b);
     return (color >> 8) | (color << 8);
+#endif
 }
 
 void
@@ -123,7 +128,11 @@ hagl_hal_init(hagl_backend_t *backend)
 
     texture = SDL_CreateTexture(
             renderer,
+#ifdef HAGL_HAL_RGB332
+            SDL_PIXELFORMAT_RGB332,
+#else
             SDL_PIXELFORMAT_RGB565,
+#endif
             SDL_TEXTUREACCESS_STATIC,
             HAGL_SDL2_DISPLAY_WIDTH,
             HAGL_SDL2_DISPLAY_HEIGHT

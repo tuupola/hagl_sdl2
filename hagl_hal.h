@@ -42,15 +42,20 @@ extern "C" {
 #include <stdbool.h>
 #include <hagl/backend.h>
 
+/* Uncomment this to change to RGB332 colorspace. */
+#define HAGL_HAL_RGB332
+
 #include "hagl_hal_color.h"
 
 /* HAL must provide display dimensions and depth. */
 #define HAGL_SDL2_DISPLAY_WIDTH     (320)
 #define HAGL_SDL2_DISPLAY_HEIGHT    (240)
+#ifdef HAGL_HAL_RGB332
+#define HAGL_SDL2_DISPLAY_DEPTH     (8)
+#else
 #define HAGL_SDL2_DISPLAY_DEPTH     (16)
+#endif
 #define HAGL_CHAR_BUFFER_SIZE       (16 * 16 * HAGL_SDL2_DISPLAY_DEPTH / 8)
-
-typedef uint16_t hagl_color_t;
 
 /**
  * @brief Initialize the backend
