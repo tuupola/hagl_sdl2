@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT-0
 #include "hagl.h"
 #include "aps.h"
 #include "font6x9.h"
-#include "backend.h"
+#include "hagl/backend.h"
 
 hagl_backend_t *backend;
 static aps_instance_t pps;
