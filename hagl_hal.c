@@ -47,14 +47,12 @@ static SDL_Texture *texture = NULL;
 
 static hagl_bitmap_t bb;
 
-static void
-put_pixel(void *self, int16_t x0, int16_t y0, hagl_color_t color) {
+static void put_pixel(void *self, int16_t x0, int16_t y0, hagl_color_t color) {
     /* Bitmap already provides a put pixel function. */
     bb.put_pixel(&bb, x0, y0, color);
 }
 
-static hagl_color_t
-get_pixel(void *self, int16_t x0, int16_t y0) {
+static hagl_color_t get_pixel(void *self, int16_t x0, int16_t y0) {
     /* Bitmap already provides a get pixel function. */
     return bb.get_pixel(&bb, x0, y0);
 }
@@ -62,8 +60,7 @@ get_pixel(void *self, int16_t x0, int16_t y0) {
 /*
  * Flushes the back buffer to the SDL2 window
  */
-static size_t
-flush(void *self) {
+static size_t flush(void *self) {
     SDL_UpdateTexture(texture, NULL, bb.buffer, bb.pitch);
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
@@ -72,23 +69,25 @@ flush(void *self) {
     return bb.size;
 }
 
-static void
-close(void *self) {
+static void close(void *self) {
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
 
-static hagl_color_t
-color(void *self, uint8_t r, uint8_t g, uint8_t b) {
+static hagl_color_t color(void *self, uint8_t r, uint8_t g, uint8_t b) {
     hagl_color_t color = rgb565(r, g, b);
     return (color >> 8) | (color << 8);
 }
 
 void hagl_hal_init(hagl_backend_t *backend) {
     if (!backend->buffer) {
-        backend->buffer = calloc(HAGL_SDL2_DISPLAY_WIDTH * HAGL_SDL2_DISPLAY_HEIGHT * (HAGL_SDL2_DISPLAY_DEPTH / 8), sizeof(uint8_t));
+        backend->buffer = calloc(
+            HAGL_SDL2_DISPLAY_WIDTH * HAGL_SDL2_DISPLAY_HEIGHT *
+                (HAGL_SDL2_DISPLAY_DEPTH / 8),
+            sizeof(uint8_t)
+        );
         printf("Allocated back buffer to address %p.\n", (void *)backend->buffer);
     } else {
         printf("Using provided back buffer at address %p.\n", (void *)backend->buffer);
@@ -104,12 +103,20 @@ void hagl_hal_init(hagl_backend_t *backend) {
     backend->flush = flush;
     backend->close = close;
 
-    hagl_bitmap_init(&bb, backend->width, backend->height, backend->depth, backend->buffer);
+    hagl_bitmap_init(
+        &bb, backend->width, backend->height, backend->depth, backend->buffer
+    );
 
     if (0 > SDL_Init(SDL_INIT_EVERYTHING)) {
         printf("Could not initialize SDL: %s\n", SDL_GetError());
     };
-    if (0 > SDL_CreateWindowAndRenderer(HAGL_SDL2_DISPLAY_WIDTH, HAGL_SDL2_DISPLAY_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer)) {
+    if (0 > SDL_CreateWindowAndRenderer(
+                HAGL_SDL2_DISPLAY_WIDTH,
+                HAGL_SDL2_DISPLAY_HEIGHT,
+                SDL_WINDOW_SHOWN,
+                &window,
+                &renderer
+            )) {
         printf("Could not create window and renderer: %s\n", SDL_GetError());
     };
 

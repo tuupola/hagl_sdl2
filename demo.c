@@ -42,8 +42,7 @@ static aps_instance_t pps;
 
 static const uint64_t MS_PER_FRAME_60_FPS = 1000 / 60;
 
-uint32_t
-pps_callback(uint32_t interval, void *param) {
+uint32_t pps_callback(uint32_t interval, void *param) {
     printf("Primitives per second: %f\n", *(float *)param);
     return interval;
 }
