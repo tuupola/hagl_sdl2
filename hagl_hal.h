@@ -38,25 +38,24 @@ SPDX-License-Identifier: MIT
 extern "C" {
 #endif
 
-#include <stdint.h>
-#include <stdbool.h>
 #include <hagl/backend.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 #include "hagl_hal_color.h"
 
 /* HAL must provide display dimensions and depth. */
-#define HAGL_SDL2_DISPLAY_WIDTH     (320)
-#define HAGL_SDL2_DISPLAY_HEIGHT    (240)
-#define HAGL_SDL2_DISPLAY_DEPTH     (16)
-#define HAGL_CHAR_BUFFER_SIZE       (16 * 16 * HAGL_SDL2_DISPLAY_DEPTH / 8)
+#define HAGL_SDL2_DISPLAY_WIDTH (320)
+#define HAGL_SDL2_DISPLAY_HEIGHT (240)
+#define HAGL_SDL2_DISPLAY_DEPTH (16)
+#define HAGL_CHAR_BUFFER_SIZE (16 * 16 * HAGL_SDL2_DISPLAY_DEPTH / 8)
 
 typedef uint16_t hagl_color_t;
 
 /**
  * @brief Initialize the backend
  */
-void
-hagl_hal_init(hagl_backend_t *backend);
+void hagl_hal_init(hagl_backend_t *backend);
 
 #ifdef __cplusplus
 }

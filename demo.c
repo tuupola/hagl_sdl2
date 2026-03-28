@@ -24,18 +24,18 @@ SOFTWARE.
 SPDX-License-Identifier: MIT-0
 
 */
-#include <time.h>
-#include <stdint.h>
+#include <SDL2/SDL.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL.h>
+#include <time.h>
 
-#include "hagl_hal.h"
-#include "hagl.h"
 #include "aps.h"
 #include "font6x9.h"
+#include "hagl.h"
 #include "hagl/backend.h"
+#include "hagl_hal.h"
 
 hagl_backend_t *backend;
 static aps_instance_t pps;
@@ -43,16 +43,12 @@ static aps_instance_t pps;
 static const uint64_t MS_PER_FRAME_60_FPS = 1000 / 60;
 
 uint32_t
-pps_callback(uint32_t interval, void *param)
-{
+pps_callback(uint32_t interval, void *param) {
     printf("Primitives per second: %f\n", *(float *)param);
     return interval;
 }
 
-
-void
-grid_test()
-{
+void grid_test() {
     uint16_t red = hagl_color(backend, 255, 0, 0);
     uint16_t green = hagl_color(backend, 0, 255, 0);
     hagl_draw_rectangle(backend, 0, 0, backend->width - 1, backend->height - 1, red);
@@ -70,9 +66,7 @@ grid_test()
     }
 }
 
-void
-polygon_demo()
-{
+void polygon_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
@@ -89,9 +83,7 @@ polygon_demo()
     hagl_draw_polygon(backend, 5, vertices, colour);
 }
 
-void
-fill_polygon_demo()
-{
+void fill_polygon_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
@@ -108,9 +100,7 @@ fill_polygon_demo()
     hagl_fill_polygon(backend, 5, vertices, colour);
 }
 
-void
-circle_demo()
-{
+void circle_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t r = (rand() % 40);
@@ -119,9 +109,7 @@ circle_demo()
     hagl_draw_circle(backend, x0, y0, r, colour);
 }
 
-void
-fill_circle_demo()
-{
+void fill_circle_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t r = (rand() % 40);
@@ -130,9 +118,7 @@ fill_circle_demo()
     hagl_fill_circle(backend, x0, y0, r, colour);
 }
 
-void
-line_demo()
-{
+void line_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
@@ -142,9 +128,7 @@ line_demo()
     hagl_draw_line(backend, x0, y0, x1, y1, colour);
 }
 
-void
-rectangle_demo()
-{
+void rectangle_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
@@ -154,9 +138,7 @@ rectangle_demo()
     hagl_draw_rectangle(backend, x0, y0, x1, y1, colour);
 }
 
-void
-fill_rectangle_demo()
-{
+void fill_rectangle_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
@@ -166,9 +148,7 @@ fill_rectangle_demo()
     hagl_fill_rectangle(backend, x0, y0, x1, y1, colour);
 }
 
-void
-put_character_demo()
-{
+void put_character_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
@@ -177,9 +157,7 @@ put_character_demo()
     hagl_put_char(backend, ascii, x0, y0, colour, font6x9);
 }
 
-void
-put_text_demo()
-{
+void put_text_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
@@ -187,9 +165,7 @@ put_text_demo()
     hagl_put_text(backend, L"YO! MTV raps.", x0, y0, colour, font6x9);
 }
 
-void
-put_pixel_demo()
-{
+void put_pixel_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
@@ -197,9 +173,7 @@ put_pixel_demo()
     hagl_put_pixel(backend, x0, y0, colour);
 }
 
-void
-triangle_demo()
-{
+void triangle_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
@@ -211,9 +185,7 @@ triangle_demo()
     hagl_draw_triangle(backend, x0, y0, x1, y1, x2, y2, colour);
 }
 
-void
-fill_triangle_demo()
-{
+void fill_triangle_demo() {
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
@@ -225,12 +197,9 @@ fill_triangle_demo()
     hagl_fill_triangle(backend, x0, y0, x1, y1, x2, y2, colour);
 }
 
-
-void
-blit_xywh_demo()
-{
+void blit_xywh_demo() {
     hagl_bitmap_t bitmap;
-    bitmap.buffer = (uint8_t *) malloc(6 * 9 * sizeof(hagl_color_t));
+    bitmap.buffer = (uint8_t *)malloc(6 * 9 * sizeof(hagl_color_t));
 
     int16_t x0 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
@@ -242,9 +211,7 @@ blit_xywh_demo()
     }
 }
 
-void
-rgb_demo()
-{
+void rgb_demo() {
     uint16_t red = hagl_color(backend, 255, 0, 0);
     uint16_t green = hagl_color(backend, 0, 255, 0);
     uint16_t blue = hagl_color(backend, 0, 0, 255);
@@ -257,10 +224,7 @@ rgb_demo()
     hagl_fill_rectangle(backend, x2, 0, backend->width, backend->height, blue);
 }
 
-
-int
-main()
-{
+int main() {
     backend = hagl_init();
     srand(time(0));
 
