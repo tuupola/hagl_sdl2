@@ -57,9 +57,7 @@ static hagl_color_t get_pixel(void *self, int16_t x0, int16_t y0) {
     return bb.get_pixel(&bb, x0, y0);
 }
 
-/*
- * Flushes the back buffer to the SDL2 window
- */
+/* Flushes the back buffer to the SDL2 window */
 static size_t flush(void *self) {
     SDL_UpdateTexture(texture, NULL, bb.buffer, bb.pitch);
     SDL_RenderClear(renderer);
@@ -107,16 +105,18 @@ void hagl_hal_init(hagl_backend_t *backend) {
         &bb, backend->width, backend->height, backend->depth, backend->buffer
     );
 
-    if (0 > SDL_Init(SDL_INIT_EVERYTHING)) {
+    int rc = SDL_Init(SDL_INIT_EVERYTHING);
+    if (rc < 0) {
         printf("Could not initialize SDL: %s\n", SDL_GetError());
     };
-    if (0 > SDL_CreateWindowAndRenderer(
-                HAGL_SDL2_DISPLAY_WIDTH,
-                HAGL_SDL2_DISPLAY_HEIGHT,
-                SDL_WINDOW_SHOWN,
-                &window,
-                &renderer
-            )) {
+    rc = SDL_CreateWindowAndRenderer(
+        HAGL_SDL2_DISPLAY_WIDTH,
+        HAGL_SDL2_DISPLAY_HEIGHT,
+        SDL_WINDOW_SHOWN,
+        &window,
+        &renderer
+    );
+    if (rc < 0) {
         printf("Could not create window and renderer: %s\n", SDL_GetError());
     };
 
