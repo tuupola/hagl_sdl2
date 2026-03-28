@@ -31,8 +31,8 @@ SPDX-License-Identifier: MIT
 
 */
 
-#ifndef _HAGL_SDL2_HAL_H
-#define _HAGL_SDL2_HAL_H
+#ifndef HAGL_SDL2_HAL_H
+#define HAGL_SDL2_HAL_H
 
 #ifdef __cplusplus
 extern "C" {
