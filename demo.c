@@ -2,7 +2,7 @@
 
 MIT No Attribution
 
-Copyright (c) 2019-2023 Mika Tuupola
+Copyright (c) 2019-2026 Mika Tuupola
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -55,8 +55,6 @@ grid_test()
 {
     uint16_t red = hagl_color(backend, 255, 0, 0);
     uint16_t green = hagl_color(backend, 0, 255, 0);
-    uint16_t blue = hagl_color(backend, 0, 0, 255);
-
     hagl_draw_rectangle(backend, 0, 0, backend->width - 1, backend->height - 1, red);
     hagl_draw_hline(backend, 0, 0, backend->width - 1, green);
     hagl_draw_hline(backend, 0, backend->height - 1, backend->width - 1, green);
@@ -151,12 +149,6 @@ rectangle_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y1 = (rand() % 280) - 20; /* -20 ... 260 */
-    int16_t x2 = (rand() % 360) - 20; /* -20 ... 340 */
-    int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
-    int16_t x3 = (rand() % 360) - 20; /* -20 ... 340 */
-    int16_t y3 = (rand() % 280) - 20; /* -20 ... 260 */
-    int16_t x4 = (rand() % 360) - 20; /* -20 ... 340 */
-    int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
     hagl_draw_rectangle(backend, x0, y0, x1, y1, colour);
@@ -169,12 +161,6 @@ fill_rectangle_demo()
     int16_t y0 = (rand() % 280) - 20; /* -20 ... 260 */
     int16_t x1 = (rand() % 360) - 20; /* -20 ... 340 */
     int16_t y1 = (rand() % 280) - 20; /* -20 ... 260 */
-    int16_t x2 = (rand() % 360) - 20; /* -20 ... 340 */
-    int16_t y2 = (rand() % 280) - 20; /* -20 ... 260 */
-    int16_t x3 = (rand() % 360) - 20; /* -20 ... 340 */
-    int16_t y3 = (rand() % 280) - 20; /* -20 ... 260 */
-    int16_t x4 = (rand() % 360) - 20; /* -20 ... 340 */
-    int16_t y4 = (rand() % 280) - 20; /* -20 ... 260 */
     uint16_t colour = rand() % 0xffff;
 
     hagl_fill_rectangle(backend, x0, y0, x1, y1, colour);
@@ -280,7 +266,6 @@ main()
 
     uint32_t pps_delay = 2000; /* 0.5 fps */
     uint16_t current_demo = 0;
-    float current_pps = 0.0; /* primitives per second */
 
     SDL_TimerID pps_id;
     pps_id = SDL_AddTimer(pps_delay, pps_callback, &pps.current);
